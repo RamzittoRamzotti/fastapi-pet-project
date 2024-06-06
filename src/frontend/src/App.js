@@ -5,7 +5,7 @@ function App() {
     const [message, setMessage] = useState('');
 
     useEffect(() => {
-        axios.get('/api/')
+        axios.get('/api')
             .then(response => {
                 setMessage(response.data.Hello);
             })
@@ -19,8 +19,9 @@ function App() {
             <header className="App-header">
                 <p>{message}</p>
             </header>
+            <br/>
+            <b><p>{message}</p></b>
         </div>
     );
 }
-
 export default App;

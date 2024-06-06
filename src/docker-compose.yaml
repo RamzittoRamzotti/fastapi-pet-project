@@ -5,28 +5,27 @@ services:
     build:
       context: ./backend
     networks:
-      - app-network
+      app-network:
+        ipv4_address: 172.21.0.2
 
   frontend:
     build:
       context: ./frontend
-    networks:
-      - app-network
-
-
-  nginx:
-    build:
-      context: .
     ports:
       - "8080:80"
     networks:
-      - app-network
-    depends_on:
-      - frontend
+      app-network:
+        ipv4_address: 172.21.0.3
     volumes:
-      - ./frontend/build:/usr/share/nginx/html
+      - frontend-build:/usr/share/nginx/html
+
 
 networks:
   app-network:
     driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/24
 
+volumes:
+  frontend-build:
