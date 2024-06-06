@@ -1,8 +1,8 @@
-FROM node:18
+FROM node:14 as build
 
 WORKDIR /app
 
-COPY  package.json package-lock.json ./
+COPY package.json package-lock.json ./
 
 RUN npm install
 
@@ -10,6 +10,9 @@ COPY . .
 
 RUN npm run build
 
-EXPOSE 3000
+VOLUME ./build ./build
 
 CMD ["npx", "serve", "-s", "build"]
+
+
+
