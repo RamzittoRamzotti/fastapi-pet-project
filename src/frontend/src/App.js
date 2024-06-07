@@ -1,26 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 
 function App() {
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState({});
 
-    useEffect(() => {
-        axios.get('/api')
-            .then(response => {
-                setMessage(response.data.Hello);
-            })
-            .catch(error => {
-                console.error("There was an error!", error);
+    useEffect( () => {
+            fetch('/api', {mode:"no-cors"})
+            .then( res =>  res.json())
+            .then(message => {
+                setMessage(message);
+                console.log(message);
             });
     }, []);
 
     return (
         <div className="App">
-            <header className="App-header">
-                <p>{message}</p>
-            </header>
-            <br/>
-            <b><p>{message}</p></b>
+            {(typeof message.Hello == 'undefined') ?
+                (<p>LOADING...</p>) :
+                (<p>{message.Hello}</p>)}
         </div>
     );
 }

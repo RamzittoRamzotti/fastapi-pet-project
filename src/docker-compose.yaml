@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
   backend:
+    container_name: backend
     build:
       context: ./backend
     networks:
@@ -9,15 +10,27 @@ services:
         ipv4_address: 172.21.0.2
 
   frontend:
+    container_name: frontend
     build:
       context: ./frontend
     ports:
-      - "8080:80"
+      - "3000:3000"
     networks:
       app-network:
         ipv4_address: 172.21.0.3
     volumes:
-      - frontend-build:/usr/share/nginx/html
+      - frontend-build:/app/build
+
+  nginx:
+    build:
+      context: .
+    ports:
+      - "8080:80"
+    networks:
+      app-network:
+        ipv4_address: 172.21.0.4
+    depends_on:
+      - frontend
 
 
 networks:
