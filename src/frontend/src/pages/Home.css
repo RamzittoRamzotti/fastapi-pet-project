@@ -1,0 +1,13 @@
+main {
+
+    height: 80vh;
+    max-width: 1500px;
+    background-color: coral;
+    border: 1px solid maroon;
+    border-radius: 15px;
+    margin: 10px auto;
+}
+
+.main-div {
+    padding: 10px;
+}

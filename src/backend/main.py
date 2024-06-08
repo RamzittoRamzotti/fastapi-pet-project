@@ -9,3 +9,6 @@ async def read_root():
     return {"Hello": "World"}
 
 
+@app.post("/isauth")
+async def isauth():
+    pass

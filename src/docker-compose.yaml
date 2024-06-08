@@ -13,8 +13,6 @@ services:
     container_name: frontend
     build:
       context: ./frontend
-    ports:
-      - "3000:3000"
     networks:
       app-network:
         ipv4_address: 172.21.0.3
@@ -25,7 +23,7 @@ services:
     build:
       context: .
     ports:
-      - "8080:80"
+      - "80:80"
     networks:
       app-network:
         ipv4_address: 172.21.0.4
