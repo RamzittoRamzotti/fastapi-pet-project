@@ -5,12 +5,12 @@ export function Header() {
     return (
         <header>
             <div className="links">
-                <p><Link to="/library">Библиотека</Link></p>
-                <p><Link to="/order">Заказать книгу</Link></p>
+                <p><Link to="/library" className="linker">Библиотека</Link></p>
+                <p><Link to="/order" className="linker">Заказать книгу</Link></p>
 
             </div>
             <div className="auth">
-                <p><Link to="/auth">Авторизоваться</Link></p>
+                <p><Link to="/auth" className="linker">Авторизоваться</Link></p>
             </div>
         </header>
     )

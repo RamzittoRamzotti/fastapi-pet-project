@@ -11,13 +11,23 @@ header {
 
 }
 
-.links > p {
+.linkers {
 
+
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    text-decoration: black;
+    text-outline: 1px burlywood;
+}
+
+.links p {
     padding: 0;
     margin: 0 10px 0;
     color: maroon;
 }
 
+p {
+
+}
 
 footer {
     display: flex;
