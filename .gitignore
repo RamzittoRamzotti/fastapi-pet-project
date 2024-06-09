@@ -1,0 +1,4 @@
+/src/backend/certs/
+.idea
+/src/frontend/node_modules
+venv
