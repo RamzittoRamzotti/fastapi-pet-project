@@ -1,15 +1,20 @@
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, APIRouter
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
 
 from models import Base, User
-from config import DBSettings
+from config import settings
+from demo.demo_jwt_auth import router
 
-engine = create_async_engine(url=DBSettings.DB_url, echo=True)
+engine = create_async_engine(url=settings.db.DB_url, echo=True)
 async_session = sessionmaker(bind=engine, expire_on_commit=False, class_=AsyncSession)
 
 app = FastAPI()
+
+route = APIRouter()
+app.include_router(route)
+app.include_router(router)
 
 
 # @app.on_event("startup")
@@ -37,4 +42,4 @@ async def isauth():
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=5000)
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)

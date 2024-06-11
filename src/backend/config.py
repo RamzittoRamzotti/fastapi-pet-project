@@ -24,8 +24,10 @@ class DBSettings(BaseModel):
 
 
 class AuthJWT(BaseModel):
-    private_key_path: str = BASE_DIR / "src" / "backend" / "jwt_private.pem"
-    public_key_path: str = BASE_DIR / "src" / "backend" / "jwt_public.pem"
+    private_key_path: str = BASE_DIR / "backend" / "certs" / "jwt_private.pem"
+    public_key_path: str = BASE_DIR / "backend" / "certs" / "jwt_public.pem"
+    algorithm: str = "RS256"
+    access_expire_token_minutes: int = 3
 
 
 class Settings(BaseSettings):
