@@ -5,15 +5,16 @@ from sqlalchemy.orm import sessionmaker
 
 from models import Base, User
 from config import settings
-from demo.demo_jwt_auth import router
+from jwt_utils.demo_jwt_auth import router
 
 engine = create_async_engine(url=settings.db.DB_url, echo=True)
 async_session = sessionmaker(bind=engine, expire_on_commit=False, class_=AsyncSession)
 
 app = FastAPI()
 
-route = APIRouter()
-app.include_router(route)
+routers = APIRouter(prefix="/home", tags=["home"])
+app.include_router(routers)
+
 app.include_router(router)
 
 
@@ -31,14 +32,9 @@ app.include_router(router)
 #             await session.commit()
 
 
-@app.get("/api")
+@routers.get("/api")
 async def read_root():
     return {"Hello": "World"}
-
-
-@app.post("/isauth")
-async def isauth():
-    pass
 
 
 if __name__ == "__main__":

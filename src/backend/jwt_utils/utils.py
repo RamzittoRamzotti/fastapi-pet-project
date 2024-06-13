@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, UTC
 
 import bcrypt
 import jwt
@@ -8,17 +8,17 @@ from src.backend.config import settings
 def encode_jwt(payload: dict, private_key: str = settings.auth_jwt.private_key_path.read_text(),
                algorithm: str = settings.auth_jwt.algorithm,
                expire_delta: timedelta | None = None,
-               expire_minutes: int = settings.auth_jwt.access_expire_token_minutes):
+               expire_minutes: int = settings.auth_jwt.access_token_expire_minutes):
     to_encode = payload.copy()
     if expire_delta:
-        expire = datetime.now() + expire_delta
+        expire = datetime.utcnow() + expire_delta
     else:
-        expire = datetime.now() + timedelta(minutes=expire_minutes)
+        expire = datetime.utcnow() + timedelta(minutes=expire_minutes)
     to_encode.update(
         exp=expire,
-        iat=datetime.now()
+        iat=datetime.utcnow()
     )
-    encoded = jwt.encode(payload, private_key, algorithm=algorithm)
+    encoded = jwt.encode(to_encode, private_key, algorithm=algorithm)
     return encoded
 
 
