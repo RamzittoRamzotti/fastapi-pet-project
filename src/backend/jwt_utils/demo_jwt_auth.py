@@ -4,10 +4,11 @@ from pydantic import BaseModel
 from fastapi.security import (
     HTTPBearer)
 
-from src.backend.jwt_utils.validation import get_current_token_payload, \
+from .validation import get_current_token_payload, \
     get_current_auth_user_for_refresh, get_current_active_auth_user, validate_auth_user
-from src.backend.jwt_utils.helpers import (create_access_token,
-                                           create_refresh_token)
+from .helpers import (
+    create_access_token,
+    create_refresh_token)
 from src.backend.schemas import UserSchema
 
 http_bearer = HTTPBearer(auto_error=False)

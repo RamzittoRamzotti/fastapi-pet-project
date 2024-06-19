@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from src.backend.jwt_utils import utils as auth_utils
+from . import utils as auth_utils
 from src.backend.config import settings
 from src.backend.schemas import UserSchema
 
@@ -25,7 +25,6 @@ def create_access_token(user: UserSchema) -> str:
         'sub': user.username,
         'username': user.username,
         'email': user.email,
-
     }
     return create_jwt(token_type=ACCESS_TOKEN_TYPE,
                       token_data=jwt_payload,

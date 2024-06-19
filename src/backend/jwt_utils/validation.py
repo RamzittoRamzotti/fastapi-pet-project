@@ -3,10 +3,11 @@ from fastapi.params import Depends
 from fastapi.security import OAuth2PasswordBearer
 from jwt import ExpiredSignatureError
 from starlette import status
+from typing import Annotated, Optional
 
 from src.backend.jwt_utils import utils as auth_utils
-from src.backend.jwt_utils.crud import users_db
-from src.backend.jwt_utils.helpers import TOKEN_TYPE_FIELD, ACCESS_TOKEN_TYPE, REFRESH_TOKEN_TYPE
+from .crud import get_user_from_db_by_username, get_user_from_db_by_email
+from .helpers import TOKEN_TYPE_FIELD, ACCESS_TOKEN_TYPE, REFRESH_TOKEN_TYPE
 from src.backend.schemas import UserSchema
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/auth")
@@ -27,7 +28,7 @@ def get_current_token_payload(
 
 def get_user_by_token_sub(payload: dict) -> UserSchema:
     username: str | None = payload.get('sub')
-    if not (user := users_db.get(username)):
+    if not (user := get_user_from_db_by_username(username)):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="user is not found",
@@ -70,24 +71,44 @@ def get_current_active_auth_user(
         )
 
 
-def validate_auth_user(
-        username: str = Form(),
+async def validate_auth_user(
+        username: Optional[str] = Form(default=None),
+        email: Optional[str] = Form(default=None),
         password: str = Form(),
 ):
     unauthed_exc = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="invalid username or password",
     )
-    if not (user := users_db.get(username)):
-        raise unauthed_exc
-    if not auth_utils.validate_password(
-            password=password,
-            hashed_password=user.password
-    ):
-        raise unauthed_exc
-    if not user.active:
+    if email is not None:
+        if not (user := await get_user_from_db_by_email(email)):
+            raise unauthed_exc
+        if not auth_utils.validate_password(
+                password=password,
+                hashed_password=user.password
+        ):
+            raise unauthed_exc
+        if not user.active:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="user is not active",
+            )
+    elif username is not None:
+        if not (user := await get_user_from_db_by_username(username)):
+            raise unauthed_exc
+        if not auth_utils.validate_password(
+                password=password,
+                hashed_password=user.password
+        ):
+            raise unauthed_exc
+        if not user.active:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="user is not active",
+            )
+    else:
         raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="user is not active",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="you must enter either username or password",
         )
     return user

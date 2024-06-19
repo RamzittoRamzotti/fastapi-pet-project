@@ -6,7 +6,7 @@ function Home() {
 
     const [mess, setMess] = useState({});
     useEffect(() => {
-        fetch('/api', {mode: "no-cors",})
+        fetch('/api')
             .then(res => res.json())
             .then(mess => {
                 setMess(mess);

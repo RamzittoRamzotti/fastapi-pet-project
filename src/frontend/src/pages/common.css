@@ -1,3 +1,9 @@
 * {
     margin: 5px
 }
+
+.loginBlock {
+    margin: 40vh 0 25vh 25vh;
+    font-family: "Roboto Thin";
+    border: black 1px solid;
+}
