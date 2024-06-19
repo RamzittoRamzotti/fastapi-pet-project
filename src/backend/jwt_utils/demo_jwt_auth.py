@@ -1,9 +1,15 @@
-from fastapi import APIRouter
-from fastapi.params import Depends
+from typing import Annotated
+
+from fastapi import APIRouter, HTTPException
+from fastapi.params import Depends, Form
 from pydantic import BaseModel
 from fastapi.security import (
     HTTPBearer)
+from starlette import status
 
+from src.backend.models import User
+from .crud import get_user_from_db_by_username, get_user_from_db_by_email, insert_new_user
+from .utils import hash_password
 from .validation import get_current_token_payload, \
     get_current_auth_user_for_refresh, get_current_active_auth_user, validate_auth_user
 from .helpers import (
@@ -54,3 +60,26 @@ def auth_refresh_jwt(user: UserSchema = Depends(get_current_auth_user_for_refres
     return TokenInfo(
         access_token=access_token
     )
+
+
+@router.post('/register')
+async def register_new_user(user: UserSchema):
+    username = user.username
+    email = user.email
+    if await get_user_from_db_by_username(username):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail='Username already registered',
+        )
+    elif email is not None and await get_user_from_db_by_email(email):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail='Email already registered',
+        )
+    else:
+        new_user = User(username=username, email=email, password=hash_password(user.password))
+        await insert_new_user(new_user)
+        return HTTPException(
+            status_code=status.HTTP_201_CREATED,
+            detail='User created successfully',
+        )

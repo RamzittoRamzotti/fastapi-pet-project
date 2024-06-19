@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, Asyn
 from . import utils as auth_utils
 from src.backend.config import settings
 from src.backend.models import User
-from sqlalchemy import select
+from sqlalchemy import select, insert
 
 engine = create_async_engine(url=settings.db.DB_url, echo=True)
 async_session = async_sessionmaker(bind=engine, expire_on_commit=False, class_=AsyncSession)
@@ -43,4 +43,12 @@ async def get_user_from_db_by_email(email: str):
             email_ = await session.execute(query)
             result = email_.scalar_one_or_none()
             return result
+
+
+async def insert_new_user(user: User):
+    async with async_session() as session:
+        async with session.begin():
+            query = insert(User).values(username=user.username, email=user.email, password=user.password)
+            await session.execute(query)
+            await session.commit()
 # asyncio.run(initial_inserts())

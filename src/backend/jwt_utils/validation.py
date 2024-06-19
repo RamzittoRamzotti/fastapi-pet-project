@@ -26,9 +26,9 @@ def get_current_token_payload(
     return payload
 
 
-def get_user_by_token_sub(payload: dict) -> UserSchema:
+async def get_user_by_token_sub(payload: dict) -> UserSchema:
     username: str | None = payload.get('sub')
-    if not (user := get_user_from_db_by_username(username)):
+    if not (user := await get_user_from_db_by_username(username)):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="user is not found",
@@ -40,9 +40,9 @@ class UserGetterFromToken:
     def __init__(self, token_type: str):
         self.token_type = token_type
 
-    def __call__(self, payload: dict = Depends(get_current_token_payload)):
+    async def __call__(self, payload: dict = Depends(get_current_token_payload)):
         validate_token_type(payload, self.token_type)
-        return get_user_by_token_sub(payload)
+        return await get_user_by_token_sub(payload)
 
 
 get_current_auth_user = UserGetterFromToken(ACCESS_TOKEN_TYPE)
