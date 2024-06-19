@@ -41,74 +41,64 @@ export function LoginForm({onLogin}) {
     );
 }
 
+
 export function LoginPage() {
-    let navigate = useNavigate()
+    let navigate = useNavigate();
+    const [error, setError] = useState("");
+
     const handleLogin = async (username, password) => {
         try {
-            const response = await fetch('http://localhost:5001/auth/jwt/login', {
+            const response = await fetch('http://localhost:5002/login/auth', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: new URLSearchParams({username, password}),
-            }).then(data => data.json())
-                .then(
-                    data => {
-                        console.log("success: %s", data)
-                        localStorage.setItem('username', data.token)
-                        return navigate('/');
-                    }
-                )
+            });
 
-
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data.message || 'Login failed');
+            }
+            console.log("Login success: ", data);
+            navigate('/');  // Navigate to the home page or dashboard
         } catch (error) {
             console.error('Login error:', error);
+            setError(error.message);
         }
-
     };
+
     return (
         <div>
             <h2>Login</h2>
+            {error && <p className="error">{error}</p>}
             <LoginForm onLogin={handleLogin}/>
         </div>
     );
-
 }
 
 export function RequireAuth({children}) {
-    const [token, setToken] = useState("");
-    const [isLoading, setIsLoading] = useState(true);
     const location = useLocation();
+    const token = localStorage.getItem('auth');  // Get the token from storage
+    const [error, setError] = useState("");
 
-    const fetchToken = async (email) => {
+    const oauth = async () => {
         try {
-            const response = await fetch('http://localhost:5001/auth/request-verigy-token', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: new URLSearchParams({
-                    email
-                }),
-            });
+            const response = await fetch('http://localhost:5002/users/me');
+
             const data = await response.json();
-            if (response.ok) {
-                setToken(data); // Assuming 'username' is part of the response
-            } else {
-                throw new Error('Failed to fetch user');
+            if (!response.ok) {
+                throw new Error(data.message || 'auth failed');
             }
+            console.log("auth success: ", data);
+            localStorage.setItem('auth', "1");  // Save the token to local storage
         } catch (error) {
-            console.error('Login error:', error);
+            console.error('auth error:', error);
+            setError(error.message);
         }
-        setIsLoading(false);
-
-    }
-    fetchToken();
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
-
-    if (!user) {
+    };
+    if (!token) {
+        // Redirect to the login page if no token is found
         return <Navigate to="/auth" state={{from: location}} replace/>;
     }
 
