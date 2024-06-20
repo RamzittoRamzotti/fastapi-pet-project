@@ -48,7 +48,7 @@ export function LoginPage() {
 
     const handleLogin = async (username, password) => {
         try {
-            const response = await fetch('http://localhost:5005/login/auth', {
+            const response = await fetch('http://127.0.0.1:5010/login/auth', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -60,8 +60,7 @@ export function LoginPage() {
             if (!response.ok) {
                 throw new Error(data.message || 'Login failed');
             }
-            console.log("Login success: ", data);
-            localStorage.setItem('token', data.token);
+            localStorage.setItem('access_token', data.access_token);
             navigate('/');  // Navigate to the home page or dashboard
         } catch (error) {
             console.error('Login error:', error);
@@ -79,31 +78,36 @@ export function LoginPage() {
 }
 
 export function RequireAuth({children}) {
-    const location = useLocation();
-    const token = localStorage.getItem('token');  // Get the token from storage
+    let navigate = useNavigate();
+    const token = localStorage.getItem('access_token');  // Get the token from storage
     const [error, setError] = useState("");
 
     const oauth = async () => {
         try {
-            const response = await fetch('http://localhost:5005/users/me', {
+            const response = await fetch('http://127.0.0.1:5010/login/users/me/', {
                 method: 'GET',
-                headers: 'Authorization Bearer ' + token,
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'accept': 'application/json',
+                }
             });
 
             const data = await response.json();
             if (!response.ok) {
-                throw new Error(data.message || 'auth failed');
+                console.error('auth error:', data);
+                setError(data.message || 'Authentication failed');
+                navigate('/auth');
+            } else {
+                console.log("auth success: ", data);
+                return children;
             }
-            console.log("auth success: ", data);
         } catch (error) {
             console.error('auth error:', error);
             setError(error.message);
         }
     };
-    if (!token) {
-        // Redirect to the login page if no token is found
-        return <Navigate to="/auth" state={{from: location}} replace/>;
-    }
+    useEffect(() => {
+        oauth();
+    }, []);
 
-    return children;
 }
