@@ -48,7 +48,7 @@ export function LoginPage() {
 
     const handleLogin = async (username, password) => {
         try {
-            const response = await fetch('http://localhost:5002/login/auth', {
+            const response = await fetch('http://localhost:5005/login/auth', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -61,6 +61,7 @@ export function LoginPage() {
                 throw new Error(data.message || 'Login failed');
             }
             console.log("Login success: ", data);
+            localStorage.setItem('token', data.token);
             navigate('/');  // Navigate to the home page or dashboard
         } catch (error) {
             console.error('Login error:', error);
@@ -79,19 +80,21 @@ export function LoginPage() {
 
 export function RequireAuth({children}) {
     const location = useLocation();
-    const token = localStorage.getItem('auth');  // Get the token from storage
+    const token = localStorage.getItem('token');  // Get the token from storage
     const [error, setError] = useState("");
 
     const oauth = async () => {
         try {
-            const response = await fetch('http://localhost:5002/users/me');
+            const response = await fetch('http://localhost:5005/users/me', {
+                method: 'GET',
+                headers: 'Authorization Bearer ' + token,
+            });
 
             const data = await response.json();
             if (!response.ok) {
                 throw new Error(data.message || 'auth failed');
             }
             console.log("auth success: ", data);
-            localStorage.setItem('auth', "1");  // Save the token to local storage
         } catch (error) {
             console.error('auth error:', error);
             setError(error.message);
