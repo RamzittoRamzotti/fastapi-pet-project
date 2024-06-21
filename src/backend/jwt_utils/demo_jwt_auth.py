@@ -28,7 +28,7 @@ class TokenInfo(BaseModel):
     token_type: str = "Bearer"
 
 
-@router.post('/auth', response_model=TokenInfo)
+@router.post('/auth/', response_model=TokenInfo)
 def auth_user_jwt_issue(
         user: UserSchema = Depends(validate_auth_user)
 ):
@@ -40,7 +40,7 @@ def auth_user_jwt_issue(
     )
 
 
-@router.get('/users/me')
+@router.get('/users/me/')
 def auth_user_check_self_info(
         payload: dict = Depends(get_current_token_payload),
         user: UserSchema = Depends(get_current_active_auth_user),
@@ -53,7 +53,7 @@ def auth_user_check_self_info(
     }
 
 
-@router.post('/refresh', response_model=TokenInfo, response_model_exclude_none=True)
+@router.post('/refresh/', response_model=TokenInfo, response_model_exclude_none=True)
 def auth_refresh_jwt(user: UserSchema = Depends(get_current_auth_user_for_refresh)):
     access_token = create_access_token(user)
     return TokenInfo(
@@ -61,7 +61,7 @@ def auth_refresh_jwt(user: UserSchema = Depends(get_current_auth_user_for_refres
     )
 
 
-@router.post('/register')
+@router.post('/register/')
 async def register_new_user(user: UserSchema):
     username = user.username
     email = user.email

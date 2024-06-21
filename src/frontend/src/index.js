@@ -20,9 +20,10 @@ const router = createBrowserRouter(
             path: "/",
             element: (
                 <>
-                    <Header/>
+                    <header><Header/></header>
+
                     <RequireAuth><Home/></RequireAuth>
-                    <Footer/>
+                    <footer><Footer/></footer>
                 </>
             )
         },
@@ -31,6 +32,7 @@ const router = createBrowserRouter(
             element: (
                 <>
                     <LoginPage/>
+                    <footer><Footer/></footer>
                 </>
             )
         }

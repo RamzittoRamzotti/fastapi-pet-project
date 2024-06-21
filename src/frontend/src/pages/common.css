@@ -7,3 +7,9 @@
     font-family: "Roboto Thin";
     border: black 1px solid;
 }
+
+.fixed-container {
+    max-width: 1400px;
+    justify-content: space-between;
+    align-items: center;
+}

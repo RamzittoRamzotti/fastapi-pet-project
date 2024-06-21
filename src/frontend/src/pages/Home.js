@@ -3,10 +3,17 @@ import "./Home.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Home() {
+    const access_token = localStorage.getItem('access_token');  // Get the token from storage
 
     const [mess, setMess] = useState({});
     useEffect(() => {
-        fetch('/api')
+        fetch('http://localhost:5000/api', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${access_token}`,
+                'accept': 'application/json',
+            }
+        })
             .then(res => res.json())
             .then(mess => {
                 setMess(mess);

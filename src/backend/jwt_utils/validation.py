@@ -12,7 +12,7 @@ from .crud import get_user_from_db_by_username, get_user_from_db_by_email
 from .helpers import TOKEN_TYPE_FIELD, ACCESS_TOKEN_TYPE, REFRESH_TOKEN_TYPE
 from src.backend.schemas import UserSchema
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/auth")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/auth/")
 
 
 class OAuth2PasswordRequestFormExtended(OAuth2PasswordRequestForm):
@@ -107,6 +107,8 @@ class OAuth2PasswordRequestFormExtended(OAuth2PasswordRequestForm):
                          """
                      ),
                  ] = None):
+        self.email = email
+
         super(OAuth2PasswordRequestFormExtended, self).__init__(
             grant_type=grant_type,
             username=username,
@@ -116,7 +118,6 @@ class OAuth2PasswordRequestFormExtended(OAuth2PasswordRequestForm):
             scope=scope,
 
         )
-        self.email = email
 
 
 # uvicorn src.backend.main:app --port 5005 --reload
@@ -180,7 +181,8 @@ def get_current_active_auth_user(
 
 
 async def validate_auth_user(
-        form_data: OAuth2PasswordRequestFormExtended = Depends()
+        form_data: OAuth2PasswordRequestFormExtended = Depends(),
+
 ):
     unauthed_exc = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

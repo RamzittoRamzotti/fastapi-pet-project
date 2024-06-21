@@ -48,7 +48,7 @@ export function LoginPage() {
 
     const handleLogin = async (username, password) => {
         try {
-            const response = await fetch('http://127.0.0.1:5010/login/auth', {
+            const response = await fetch('http://localhost:5000/login/auth/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -61,6 +61,7 @@ export function LoginPage() {
                 throw new Error(data.message || 'Login failed');
             }
             localStorage.setItem('access_token', data.access_token);
+            localStorage.setItem('refresh_token', data.refresh_token)
             navigate('/');  // Navigate to the home page or dashboard
         } catch (error) {
             console.error('Login error:', error);
@@ -79,35 +80,66 @@ export function LoginPage() {
 
 export function RequireAuth({children}) {
     let navigate = useNavigate();
-    const token = localStorage.getItem('access_token');  // Get the token from storage
+    const access_token = localStorage.getItem('access_token');  // Get the token from storage
+    const refresh_token = localStorage.getItem('refresh_token');  // Get the token from storage
+
     const [error, setError] = useState("");
 
     const oauth = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:5010/login/users/me/', {
+            const response = await fetch('http://localhost:5000/login/users/me/', {
                 method: 'GET',
                 headers: {
-                    'Authorization': `Bearer ${token}`,
+                    'Authorization': `Bearer ${access_token}`,
                     'accept': 'application/json',
                 }
             });
 
             const data = await response.json();
-            if (!response.ok) {
-                console.error('auth error:', data);
-                setError(data.message || 'Authentication failed');
-                navigate('/auth');
+            let detail = data['detail']
+            if (detail === "invalid token error: Signature has expired") {
+                RefreshToken(children)
             } else {
                 console.log("auth success: ", data);
-                return children;
             }
         } catch (error) {
             console.error('auth error:', error);
             setError(error.message);
         }
     };
-    useEffect(() => {
-        oauth();
-    }, []);
 
+    return <>{children}</>;
+}
+
+function RefreshToken(props) {
+    let navigate = useNavigate();
+    const [error, setError] = useState("");
+    const refresh_token = localStorage.getItem('refresh_token');
+    const oauth = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/login/refresh/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${refresh_token}`,
+                    'accept': 'application/json',
+                }
+            });
+            const token = await response.json()
+            if (token.detail) {
+                console.log('session expired');
+                localStorage.clear();
+                navigate('/auth');
+            } else {
+                localStorage.setItem('access_token', token['access_token']);
+                RequireAuth(props.children);
+            }
+        } catch (error) {
+            console.error('auth error:', error);
+            setError(error.message);
+        }
+    }
+    useEffect(() => {
+            oauth();
+        },
+        []);
 }

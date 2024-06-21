@@ -1,8 +1,8 @@
 import uvicorn
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Depends
 from starlette.middleware.cors import CORSMiddleware
 
-from src.backend.jwt_utils.demo_jwt_auth import router
+from src.backend.jwt_utils.demo_jwt_auth import router, http_bearer
 
 app = FastAPI()
 
@@ -14,19 +14,19 @@ origins = [
     "http://localhost:5005",
     "http://localhost:5000",
     "http://localhost:5010",
+    "http://127.0.0.1:5000"
 
 ]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    expose_headers=["Authorization"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
-@app.get("/api")
+@app.get("/api", dependencies=[Depends(http_bearer)])
 async def read_root():
     return {"Hello": "World"}
 
