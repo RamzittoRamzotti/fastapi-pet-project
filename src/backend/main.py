@@ -26,7 +26,7 @@ app.add_middleware(
 )
 
 
-@app.get("/api", dependencies=[Depends(http_bearer)])
+@app.get("/api")
 async def read_root():
     return {"Hello": "World"}
 

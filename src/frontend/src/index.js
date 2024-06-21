@@ -5,7 +5,7 @@ import Home from './pages/Home'
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Header, Footer} from "./pages/common/HeaderAndFooter";
-import {LoginPage, RequireAuth} from "./pages/Login";
+import {LoginPage, RequireAuth, RefreshToken} from "./pages/Login";
 
 // const [auth, setAuth] = useState(null);
 //
@@ -35,7 +35,15 @@ const router = createBrowserRouter(
                     <footer><Footer/></footer>
                 </>
             )
-        }
+        },
+        // {
+        //     path: "/refresh-token",
+        //     element: (
+        //         <>
+        //             <RefreshToken/>
+        //         </>
+        //     )
+        // }
         // {
         //     path: "/about",
         //     element: (

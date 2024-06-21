@@ -1,7 +1,6 @@
-import {useEffect, useState} from "react";
-import React from 'react';
-import {Navigate, useLocation, useNavigate} from 'react-router-dom';
-import "./common.css"
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
+import "./common.css";
 
 export function LoginForm({onLogin}) {
     const [username, setUsername] = useState('');
@@ -41,7 +40,6 @@ export function LoginForm({onLogin}) {
     );
 }
 
-
 export function LoginPage() {
     let navigate = useNavigate();
     const [error, setError] = useState("");
@@ -78,68 +76,66 @@ export function LoginPage() {
     );
 }
 
-export function RequireAuth({children}) {
-    let navigate = useNavigate();
-    const access_token = localStorage.getItem('access_token');  // Get the token from storage
-    const refresh_token = localStorage.getItem('refresh_token');  // Get the token from storage
-
-    const [error, setError] = useState("");
-
-    const oauth = async () => {
-        try {
-            const response = await fetch('http://localhost:5000/login/users/me/', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${access_token}`,
-                    'accept': 'application/json',
-                }
-            });
-
-            const data = await response.json();
-            let detail = data['detail']
-            if (detail === "invalid token error: Signature has expired") {
-                RefreshToken(children)
-            } else {
-                console.log("auth success: ", data);
-            }
-        } catch (error) {
-            console.error('auth error:', error);
-            setError(error.message);
+async function RefreshToken(navigate, setError) {
+    const refresh_token = localStorage.getItem('refresh_token');
+    try {
+        const response = await fetch('http://localhost:5000/login/refresh/', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${refresh_token}`,
+                'Accept': 'application/json',
+            },
+        });
+        const token = await response.json();
+        if (token.detail) {
+            console.log('session expired');
+            localStorage.clear();
+            navigate('/auth')
+        } else {
+            localStorage.setItem('access_token', token.access_token);
+            
         }
-    };
+    } catch (error) {
+        console.error('auth error:', error);
+        setError(error.message);
+    }
 
-    return <>{children}</>;
 }
 
-function RefreshToken(props) {
+export function RequireAuth({children}) {
     let navigate = useNavigate();
+    const access_token = localStorage.getItem('access_token');
     const [error, setError] = useState("");
-    const refresh_token = localStorage.getItem('refresh_token');
-    const oauth = async () => {
-        try {
-            const response = await fetch('http://localhost:5000/login/refresh/', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${refresh_token}`,
-                    'accept': 'application/json',
-                }
-            });
-            const token = await response.json()
-            if (token.detail) {
-                console.log('session expired');
-                localStorage.clear();
-                navigate('/auth');
-            } else {
-                localStorage.setItem('access_token', token['access_token']);
-                RequireAuth(props.children);
-            }
-        } catch (error) {
-            console.error('auth error:', error);
-            setError(error.message);
-        }
-    }
+
     useEffect(() => {
-            oauth();
-        },
-        []);
+        const authenticate = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/login/users/me/', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`,
+                        'Accept': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+                if (data.detail) {
+                    console.log("Session needs refresh");
+                    await RefreshToken();
+                } else {
+                    console.log("Auth success: ", data);
+                }
+            } catch (error) {
+                console.error('Auth error:', error);
+                setError(error.message);
+            }
+        };
+
+        authenticate();
+    }, [access_token, navigate]);
+
+    if (error) {
+        return <p className="error">{error}</p>;
+    }
+    return <>{children}</>;
 }

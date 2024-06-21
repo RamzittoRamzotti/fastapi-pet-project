@@ -8,11 +8,8 @@ function Home() {
     const [mess, setMess] = useState({});
     useEffect(() => {
         fetch('http://localhost:5000/api', {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${access_token}`,
-                'accept': 'application/json',
-            }
+            method: 'GET'
+
         })
             .then(res => res.json())
             .then(mess => {
