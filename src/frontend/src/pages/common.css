@@ -10,6 +10,14 @@
 
 .fixed-container {
     max-width: 1400px;
+    display: flex;
+    flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.footers {
+    justify-content: center;
     align-items: center;
 }

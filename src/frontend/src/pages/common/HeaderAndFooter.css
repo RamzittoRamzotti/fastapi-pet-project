@@ -3,7 +3,6 @@ header {
     border: 1px maroon solid;
     border-radius: 15px;
     display: flex;
-    max-width: 1500px;
     justify-content: space-between;
     align-items: center;
     background: coral;
@@ -35,7 +34,6 @@ footer {
     justify-content: space-evenly;
     flex-wrap: wrap;
     align-content: space-evenly;
-    max-width: 1500px;
     height: 8vh;
     border: 1px maroon solid;
     background-color: coral;

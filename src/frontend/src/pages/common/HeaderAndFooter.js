@@ -12,7 +12,7 @@ export function Header() {
 
                 </div>
                 <div className="auth">
-                    <p><Link to="/auth" className="linker">Авторизоваться</Link></p>
+                    <p><Link to="/logout" className="linker">Авторизоваться</Link></p>
                 </div>
             </div>
         </>
@@ -21,7 +21,7 @@ export function Header() {
 
 export function Footer() {
     return (
-        <div className="fixed-container">
+        <div className="fixed-container footers">
             <p><Link className="btn btn-success" to="https://github.com/RamzittoRamzotti/fastapi-pet-project"
                      target="_blank"
                      rel="noreferrer">fastapi-pet-project</Link> by ramzittoramzotti</p>

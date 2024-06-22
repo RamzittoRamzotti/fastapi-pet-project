@@ -1,12 +1,18 @@
 import {useEffect, useState} from "react";
 import "./Home.css"
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useNavigate} from "react-router-dom";
 
 function Home() {
     const access_token = localStorage.getItem('access_token');  // Get the token from storage
-
+    let navigate = useNavigate();
     const [mess, setMess] = useState({});
+
     useEffect(() => {
+        if (!access_token) {
+            return navigate('/auth');
+
+        }
         fetch('http://localhost:5000/api', {
             method: 'GET'
 
@@ -33,6 +39,8 @@ function Home() {
         </main>
 
     );
+
+
 }
 
 export default Home;

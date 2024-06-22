@@ -6,6 +6,7 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Header, Footer} from "./pages/common/HeaderAndFooter";
 import {LoginPage, RequireAuth, RefreshToken} from "./pages/Login";
+import Logout from "./pages/logout";
 
 // const [auth, setAuth] = useState(null);
 //
@@ -36,14 +37,14 @@ const router = createBrowserRouter(
                 </>
             )
         },
-        // {
-        //     path: "/refresh-token",
-        //     element: (
-        //         <>
-        //             <RefreshToken/>
-        //         </>
-        //     )
-        // }
+        {
+            path: "/logout",
+            element: (
+                <>
+                    <Logout/>
+                </>
+            )
+        }
         // {
         //     path: "/about",
         //     element: (

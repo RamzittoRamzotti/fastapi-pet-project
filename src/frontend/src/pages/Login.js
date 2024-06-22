@@ -76,7 +76,7 @@ export function LoginPage() {
     );
 }
 
-async function RefreshToken(navigate, setError) {
+async function RefreshToken(navigate, setError, setAccessToken) {
     const refresh_token = localStorage.getItem('refresh_token');
     try {
         const response = await fetch('http://localhost:5000/login/refresh/', {
@@ -93,21 +93,23 @@ async function RefreshToken(navigate, setError) {
             navigate('/auth')
         } else {
             localStorage.setItem('access_token', token.access_token);
-            
+            setAccessToken(token.access_token);
         }
     } catch (error) {
         console.error('auth error:', error);
         setError(error.message);
     }
-
 }
 
 export function RequireAuth({children}) {
     let navigate = useNavigate();
-    const access_token = localStorage.getItem('access_token');
+    const [access_token, setAccessToken] = useState(localStorage.getItem('access_token'));
     const [error, setError] = useState("");
 
     useEffect(() => {
+        if (localStorage.length === 0) {
+            return navigate('/auth')
+        }
         const authenticate = async () => {
             try {
                 const response = await fetch('http://localhost:5000/login/users/me/', {
@@ -121,7 +123,7 @@ export function RequireAuth({children}) {
                 const data = await response.json();
                 if (data.detail) {
                     console.log("Session needs refresh");
-                    await RefreshToken();
+                    await RefreshToken(navigate, setError, setAccessToken);
                 } else {
                     console.log("Auth success: ", data);
                 }
@@ -130,7 +132,6 @@ export function RequireAuth({children}) {
                 setError(error.message);
             }
         };
-
         authenticate();
     }, [access_token, navigate]);
 
