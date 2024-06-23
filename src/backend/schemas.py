@@ -31,3 +31,12 @@ class UserSchema(BaseModel):
         if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", value):
             raise ValueError('Password must contain at least one special character')
         return value
+
+
+class BookSchema(BaseModel):
+    model_config = ConfigDict(strict=True)
+
+    title: str
+    author: str
+    title_picture: str
+    user_id: int

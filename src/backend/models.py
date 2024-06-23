@@ -18,15 +18,15 @@ class User(Base):
         return f'User(id={self.id}, name={self.username}, email={self.email})'
 
 
-class Books(Base):
+class Book(Base):
     __tablename__ = 'books'
 
     id: int = Column(Integer, primary_key=True)
     title: str = Column(String(255), nullable=False)
     author: str = Column(String(255), nullable=False)
     title_picture: str = Column(String(255), nullable=False)
-
-    user_id: int = Column(Integer, ForeignKey('users.id'), nullable=False)
+    description: str = Column(String(5000), nullable=False)
+    user_id: int = Column(Integer, ForeignKey('users.id'), nullable=True)
 
     def __repr__(self):
         return f'Books(id={self.id}, title={self.title}, author={self.author})'

@@ -8,7 +8,7 @@ from typing import Annotated, Optional
 from typing_extensions import Doc
 
 from src.backend.jwt_utils import utils as auth_utils
-from .crud import get_user_from_db_by_username, get_user_from_db_by_email
+from .crud import get_user_from_db_by_username, get_user_from_db_by_email, get_admin
 from .helpers import TOKEN_TYPE_FIELD, ACCESS_TOKEN_TYPE, REFRESH_TOKEN_TYPE
 from src.backend.schemas import UserSchema
 
@@ -221,3 +221,8 @@ async def validate_auth_user(
             detail="you must enter either username or email",
         )
     return user
+
+
+async def is_admin(user: UserSchema = Depends(get_current_active_auth_user)):
+    result = await get_admin(user)
+    return result
