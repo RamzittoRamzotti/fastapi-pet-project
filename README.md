@@ -1,5 +1,5 @@
 ### TODO:
-- JWT token authentification
+- Админка
 - secondary pages
-- Postgresql integration
-- backend on fastapi at all=)
+- Books pagination
+- smtp
