@@ -25,13 +25,13 @@ function Home() {
     }, []);
 
     return (
-        <main>
+        <main className="fixed-container">
 
             {
                 (typeof mess.Hello == 'undefined') ?
                     (<div className="main-div">Loading...</div>) :
                     (
-                        <div className="main-div text-success">{mess.Hello}</div>
+                        <div className="main-div text-success ">{mess.Hello}</div>
 
                     )
             }

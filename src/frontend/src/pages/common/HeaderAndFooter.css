@@ -1,5 +1,5 @@
 header {
-    height: 10vh;
+    height: 100px;
     border: 1px maroon solid;
     border-radius: 15px;
     display: flex;
@@ -11,8 +11,6 @@ header {
 }
 
 .linkers {
-
-
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
     text-decoration: black;
     text-outline: 1px burlywood;
@@ -20,25 +18,23 @@ header {
 
 .links p {
     padding: 0;
-    margin: 0 10px 0;
+    margin-left: 100px;
+    margin-top: 0;
+    margin-bottom: 0;
     color: maroon;
 }
 
-p {
-
-}
 
 footer {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    flex-wrap: wrap;
-    align-content: space-evenly;
-    height: 8vh;
+    align-items: center;
     border: 1px maroon solid;
     background-color: coral;
-    margin: 10px 0;
+    margin: 10px 0 auto;
     border-radius: 15px;
+    height: 80px;
 }
 
 footer > p {
@@ -53,22 +49,24 @@ footer > p {
     width: 50%;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: flex-start;
     align-items: center;
-    padding: 10px;
 }
 
-Link:hover {
+.linkers:hover {
     text-decoration: underline;
+    text-blink: 1;
     color: orange;
 }
 
-Link:after {
+.linkers:after {
     text-decoration: none;
 }
 
-Link {
+.linkers {
+    font-size: 25px;
     color: maroon;
+
     text-decoration: none;
 }
 
@@ -82,8 +80,8 @@ Link {
 }
 
 .auth > p {
-    padding: 0 50px 0;
-    margin: 0;
+    padding: 0 50px 0 0;
+    margin: 0 20px 0 0;
 
 }
 

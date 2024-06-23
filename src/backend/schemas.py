@@ -14,8 +14,8 @@ class UserSchema(BaseModel):
     model_config = ConfigDict(strict=True)
 
     username: str
-    password: str
     email: Optional[EmailStr | None] = None
+    password: str
     active: bool = True
 
     @field_validator('password')

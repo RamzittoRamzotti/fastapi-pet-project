@@ -7,12 +7,12 @@ export function Header() {
         <>
             <div className="fixed-container">
                 <div className="links">
-                    <p><Link to="/library" className="linker">Библиотека</Link></p>
-                    <p><Link to="/order" className="linker">Заказать книгу</Link></p>
+                    <p><Link to="/library" className="linkers">Библиотека</Link></p>
+                    <p><Link to="/order" className="linkers">Заказать книгу</Link></p>
 
                 </div>
                 <div className="auth">
-                    <p><Link to="/logout" className="linker">Авторизоваться</Link></p>
+                    <p><Link to="/logout" className="btn btn-danger">Выйти</Link></p>
                 </div>
             </div>
         </>

@@ -1,23 +1,84 @@
-* {
-    margin: 5px
+
+.loginPage {
+    height: 90vh;
+    max-width: 1400px;
+    margin: 5px 0 auto;
+    background-color: coral;
+    border-radius: 15px;
+    border: 1px maroon solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: cursive;
+
 }
 
 .loginBlock {
-    margin: 40vh 0 25vh 25vh;
-    font-family: "Roboto Thin";
-    border: black 1px solid;
+    margin: 200px auto;
+    height: 90%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 }
 
+.loginForm {
+    font-family: cursive;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-content: space-around;
+}
+
+.input-div > button {
+    margin: 30px 0 0;
+    width: 150px;
+    font-size: 20px;
+}
+
+.input-div > label {
+    text-outline: maroon 2px;
+    font-size: 20px;
+}
+
+.input-div {
+    margin-top: 20px;
+    font-size: 20px;
+    width: 400px;
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.loginPage > h2 {
+    height: 10%;
+    text-align: center;
+    align-self: center;
+    margin: 50px auto;
+    padding: 0;
+}
+
+
 .fixed-container {
+    margin: 0;
+    width: 100%;
     max-width: 1400px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
 }
 
 .footers {
     justify-content: center;
     align-items: center;
 }
+
+.footers p {
+    margin: 0;
+    padding: 0;
+}
+

@@ -6,14 +6,9 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Header, Footer} from "./pages/common/HeaderAndFooter";
 import {LoginPage, RequireAuth, RefreshToken} from "./pages/Login";
-import Logout from "./pages/logout";
+import Logout from "./pages/Logout";
+import {RegisterPage} from "./pages/Register";
 
-// const [auth, setAuth] = useState(null);
-//
-// function isAuthenticated() {
-//     fetch("/auth/jwt/login")
-//         .then()
-// }
 
 const router = createBrowserRouter(
     [
@@ -44,7 +39,17 @@ const router = createBrowserRouter(
                     <Logout/>
                 </>
             )
+        },
+        {
+            path: "/register",
+            element: (
+                <>
+                    <RegisterPage/>
+                    <footer><Footer/></footer>
+                </>
+            )
         }
+
         // {
         //     path: "/about",
         //     element: (

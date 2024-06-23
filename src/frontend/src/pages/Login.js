@@ -1,20 +1,23 @@
 import React, {useEffect, useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useLocation, useNavigate} from "react-router-dom";
 import "./common.css";
 
 export function LoginForm({onLogin}) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-
+    let navigate = useNavigate();
     const handleSubmit = async (event) => {
         event.preventDefault();
         onLogin(username, password);
     };
-
+    const registerClick = async (event) => {
+        event.preventDefault();
+        navigate('/register');
+    }
     return (
         <div className="loginBlock">
-            <form onSubmit={handleSubmit}>
-                <div>
+            <form onSubmit={handleSubmit} className="loginForm">
+                <div className="input-div">
                     <label htmlFor="username">Username:</label>
                     <input
                         type="text"
@@ -24,7 +27,7 @@ export function LoginForm({onLogin}) {
                         required
                     />
                 </div>
-                <div>
+                <div className="input-div">
                     <label htmlFor="password">Password:</label>
                     <input
                         type="password"
@@ -34,7 +37,11 @@ export function LoginForm({onLogin}) {
                         required
                     />
                 </div>
-                <button type="submit">Login</button>
+                <div className="input-div">
+                    <button onClick={registerClick} className="btn btn-light">Sign up</button>
+                    <button type="submit" className="btn btn-success">Login</button>
+
+                </div>
             </form>
         </div>
     );
@@ -60,7 +67,7 @@ export function LoginPage() {
             }
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('refresh_token', data.refresh_token)
-            navigate('/');  // Navigate to the home page or dashboard
+            navigate('/');
         } catch (error) {
             console.error('Login error:', error);
             setError(error.message);
@@ -68,8 +75,8 @@ export function LoginPage() {
     };
 
     return (
-        <div>
-            <h2>Login</h2>
+        <div className="loginPage">
+            <h2>Authentication page</h2>
             {error && <p className="error">{error}</p>}
             <LoginForm onLogin={handleLogin}/>
         </div>
