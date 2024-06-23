@@ -1,4 +1,4 @@
-from sqlalchemy import String, Column, Integer, LargeBinary
+from sqlalchemy import String, Column, Integer, LargeBinary, Boolean, ForeignKey
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -11,7 +11,22 @@ class User(Base):
     username: str = Column(String(50), nullable=False)
     email: str = Column(String(255), unique=True, nullable=True)
     password: bytes = Column(LargeBinary(2555), nullable=False)
-    active: bool = True
+    active: bool = Column(Boolean(), default=True)
+    admin: bool = Column(Boolean(), default=False)
 
     def __repr__(self):
         return f'User(id={self.id}, name={self.username}, email={self.email})'
+
+
+class Books(Base):
+    __tablename__ = 'books'
+
+    id: int = Column(Integer, primary_key=True)
+    title: str = Column(String(255), nullable=False)
+    author: str = Column(String(255), nullable=False)
+    title_picture: str = Column(String(255), nullable=False)
+
+    user_id: int = Column(Integer, ForeignKey('users.id'), nullable=False)
+
+    def __repr__(self):
+        return f'Books(id={self.id}, title={self.title}, author={self.author})'

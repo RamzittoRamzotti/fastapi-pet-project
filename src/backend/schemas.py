@@ -17,6 +17,7 @@ class UserSchema(BaseModel):
     email: Optional[EmailStr | None] = None
     password: str
     active: bool = True
+    admin: bool = False
 
     @field_validator('password')
     @classmethod
