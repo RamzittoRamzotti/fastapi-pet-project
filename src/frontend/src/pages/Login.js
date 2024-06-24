@@ -63,7 +63,7 @@ export function LoginPage() {
 
             const data = await response.json();
             if (!response.ok) {
-                throw new Error(data.message || 'Login failed');
+                throw new Error(data.detail || 'Login failed');
             }
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('refresh_token', data.refresh_token)

@@ -1,13 +1,14 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from jwt_utils.crud import get_user_from_db_by_username, is_admin
+from src.backend.books_utils import books_router
+from src.backend.jwt_utils.validation import is_admin
 from src.backend.jwt_utils.demo_jwt_auth import router
 
 app = FastAPI()
 
 app.include_router(router)
-
+app.include_router(books_router)
 origins = [
     "http://localhost:3001",
     "http://localhost:3000",

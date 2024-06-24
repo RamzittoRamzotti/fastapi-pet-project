@@ -8,6 +8,8 @@ import {Header, Footer} from "./pages/common/HeaderAndFooter";
 import {LoginPage, RequireAuth, RefreshToken} from "./pages/Login";
 import Logout from "./pages/Logout";
 import {RegisterPage} from "./pages/Register";
+import {Library} from "./pages/secondary/Library";
+import {Order} from "./pages/secondary/Order";
 
 
 const router = createBrowserRouter(
@@ -48,28 +50,27 @@ const router = createBrowserRouter(
                     <footer><Footer/></footer>
                 </>
             )
+        },
+        {
+            path: "/library",
+            element: (
+                <>
+                    <header><Header/></header>
+                    <RequireAuth><Library/></RequireAuth>
+                    <footer><Footer/></footer>
+                </>
+            )
+        },
+        {
+            path: "/order",
+            element: (
+                <>
+                    <header><Header/></header>
+                    <RequireAuth><Order/></RequireAuth>
+                    <footer><Footer/></footer>
+                </>
+            )
         }
-
-        // {
-        //     path: "/about",
-        //     element: (
-        //         <>
-        //             <Header/>
-        //                 <About/>
-        //             <Footer/>
-        //         </>
-        //     )
-        // },
-        // {
-        //     path: "/order",
-        //     element: (
-        //         <>
-        //             <Header/>
-        //             <Order/>
-        //             <Footer/>
-        //         </>
-        //     )
-        // }
     ]
 )
 

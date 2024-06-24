@@ -1,0 +1,15 @@
+main {
+    min-height: 750px;
+    max-width: 1400px;
+    background-color: coral;
+    border: 1px solid maroon;
+    border-radius: 15px;
+    margin: 10px auto;
+
+}
+
+.main-div {
+    padding: 10px;
+    justify-content: normal;
+    align-items: start;
+}
