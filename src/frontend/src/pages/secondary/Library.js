@@ -45,15 +45,17 @@ export function Library() {
             {(typeof books == 'undefined') ? <p>Loading...</p> : (
                 <div className="book-div">
                     {books.map((book) => (
-                            <ul>
+                            <ul className="ul-align">
                                 <img src={`http://localhost:5000/images/${book.title_picture}`} alt={book['title']}
-                                     className="book-image"/>
+                                     className="book-image "/>
                                 <li key={book['id']}>Название книги: {book['title']}</li>
                                 <li>Автор: {book['author']}</li>
-                                <li>{book['description']}</li>
-                                {(books['user_id'] === null) ? (<li>
-                                    <button className="btn btn-dark">Забронировать</button>
-                                </li>) : (<></>)}
+                                <li><p>{book['description']}</p></li>
+                                {book.user_id === null ? (
+                                    <li>
+                                        <button className="btn btn-dark">Забронировать</button>
+                                    </li>
+                                ) : null}
 
                             </ul>
                         )

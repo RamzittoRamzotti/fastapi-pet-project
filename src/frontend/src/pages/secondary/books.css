@@ -20,17 +20,30 @@ main {
     margin: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
-.book-div img li {
-    align-self: center;
+.book-div ul {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+    list-style-type: none;
+    padding: 15px;
+    border-radius: 10px;
+    background-color: cornsilk;
+}
+
+.book-div p {
+    text-align: justify;
 }
 
 .book-image {
-    width: 150px; /* Adjust width */
-    height: 200px; /* Adjust height */
-    object-fit: cover; /* This will make sure the image covers the defined area without distortion */
-    align-self: center;
+    width: 200px;
+    height: 300px;
+    object-fit: cover;
+    margin-bottom: 10px;
 }
+
