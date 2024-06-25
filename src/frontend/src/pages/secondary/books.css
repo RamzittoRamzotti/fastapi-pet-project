@@ -5,11 +5,32 @@ main {
     border: 1px solid maroon;
     border-radius: 15px;
     margin: 10px auto;
-
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
 }
 
-.main-div {
-    padding: 10px;
-    justify-content: normal;
-    align-items: start;
+.buttons-div {
+    margin: 10px;
+}
+
+.book-div {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.book-div img li {
+    align-self: center;
+}
+
+.book-image {
+    width: 150px; /* Adjust width */
+    height: 200px; /* Adjust height */
+    object-fit: cover; /* This will make sure the image covers the defined area without distortion */
+    align-self: center;
 }

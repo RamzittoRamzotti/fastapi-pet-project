@@ -1,40 +1,72 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
+import "./books.css"
 
 export function Library() {
     const access_token = localStorage.getItem('access_token');
     let navigate = useNavigate();
-    const [mess, setMess] = useState({});
+    const [totalCount, setCount] = useState(0);
+    const [skip, setSkip] = useState(0);
+    const [limit, setLimit] = useState(2);
+    const [books, setBooks] = useState([]);
+
 
     useEffect(() => {
         if (!access_token) {
             return navigate('/auth');
-
         }
-        fetch('http://localhost:5000/books/', {
-            method: 'GET'
-
-        })
-            .then(res => res.json())
-            .then(mess => {
-                setMess(mess);
-                console.log(mess);
-            });
-    }, []);
-
-    return (
-        <main className="fixed-container">
-            {
-                (typeof mess.Hello == 'undefined') ?
-                    (<div className="main-div">Loading...</div>) :
-                    (
-                        <div className="main-div text-success ">{mess.Hello}</div>
-
-                    )
+        const getBooks = async (skip, limit) => {
+            try {
+                let response = await fetch(`http://localhost:5000/books?skip=${skip}&limit=${limit}`, {
+                    method: 'GET'
+                })
+                let res = await response.json()
+                if (res.detail) {
+                    throw new Error(res.detail);
+                } else {
+                    setBooks(res['books']);
+                    setCount(res['count']);
+                }
+            } catch (error) {
+                console.error(error)
             }
+        }
+        getBooks(skip, limit);
+    }, [skip])
+    const handlePrevious = () => {
+        setSkip(Math.max(0, skip - limit))
+    }
+    const handleNext = () => {
+        setSkip(skip + limit)
+    }
+    return (
+        <main>
+            <h1>Book List</h1>
+            {(typeof books == 'undefined') ? <p>Loading...</p> : (
+                <div className="book-div">
+                    {books.map((book) => (
+                            <ul>
+                                <img src={`http://localhost:5000/images/${book.title_picture}`} alt={book['title']}
+                                     className="book-image"/>
+                                <li key={book['id']}>Название книги: {book['title']}</li>
+                                <li>Автор: {book['author']}</li>
+                                <li>{book['description']}</li>
+                                {(books['user_id'] === null) ? (<li>
+                                    <button className="btn btn-dark">Забронировать</button>
+                                </li>) : (<></>)}
 
+                            </ul>
+                        )
+                    )
+                    }
+                </div>
+            )}
+            <div className="buttons-div">
+                <button onClick={handlePrevious} disabled={skip === 0}>Previous</button>
+                <button onClick={handleNext} disabled={skip + limit >= totalCount}>Next</button>
+            </div>
         </main>
-
     );
+
 
 }

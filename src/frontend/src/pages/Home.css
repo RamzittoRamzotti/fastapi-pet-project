@@ -5,7 +5,7 @@ main {
     border: 1px solid maroon;
     border-radius: 15px;
     margin: 10px auto;
-
+    width: 100%;
 }
 
 .main-div {
