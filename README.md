@@ -1,6 +1,6 @@
 ### TODO:
 - Админка
 - secondary pages
-- Books pagination
+- Books filtration
 - smtp
 - вход email или username в одном поле
