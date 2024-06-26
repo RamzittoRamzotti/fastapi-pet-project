@@ -47,7 +47,7 @@ export function Library() {
                     {books.map((book) => (
                             <ul className="ul-align">
                                 <img src={`http://localhost:5000/images/${book.title_picture}`} alt={book['title']}
-                                     className="book-image "/>
+                                     className="book-image"/>
                                 <li key={book['id']}>Название книги: {book['title']}</li>
                                 <li>Автор: {book['author']}</li>
                                 <li><p>{book['description']}</p></li>

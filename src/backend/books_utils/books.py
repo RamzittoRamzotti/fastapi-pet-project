@@ -1,9 +1,15 @@
-from fastapi import Query, HTTPException
-from starlette import status
+import shutil
 
-from src.backend.books_utils.crud import get_all_books
+from fastapi import Query, HTTPException, Form, UploadFile, File
+from sqlalchemy import null
+from starlette import status
+from typing_extensions import Annotated
+
+from src.backend.books_utils.crud import get_all_books, add_book_db
 
 from fastapi import APIRouter
+
+from src.backend.schemas import BookSchema
 
 books_router = APIRouter(prefix="/books", tags=["books"])
 
@@ -20,3 +26,26 @@ async def get_books(
             detail="No books found."
         )
     return books
+
+
+@books_router.post("/add_book")
+async def add_book(title: str = Form(),
+                   author: str = Form(),
+                   desc: str = Form(),
+                   img: UploadFile = File(...)):
+    with open(f'src/frontend/public/images/{img.filename}', "wb+") as file:
+        shutil.copyfileobj(img.file, file)
+    book = BookSchema(
+        title=title,
+        author=author,
+        description=desc,
+        title_picture=img.filename,
+    )
+    result = await add_book_db(book)
+    if result:
+        return result
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Book could not be added."
+        )

@@ -1,10 +1,11 @@
 from fastapi import Depends
-from sqlalchemy import select
+from sqlalchemy import select, insert
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 from sqlalchemy.sql.functions import count, func
 
 from src.backend.database import engine
 from src.backend.models import Book
+from src.backend.schemas import BookSchema
 
 async_session = async_sessionmaker(bind=engine, expire_on_commit=False, class_=AsyncSession)
 
@@ -64,3 +65,12 @@ async def get_all_books(skip: int, limit: int):
                 "books": books,
                 "count": count,
             }
+
+
+async def add_book_db(book: BookSchema):
+    async with async_session() as session:
+        async with session.begin():
+            books = Book(**book.dict())
+            session.add(books)
+            await session.commit()
+            return True

@@ -133,11 +133,20 @@ export function RequireAuth({children}) {
                     await RefreshToken(navigate, setError, setAccessToken);
                 } else {
                     console.log("Auth success: ", data);
+                    if (data.admin) {
+                        const parent = document.querySelector(".auth");
+                        const child = document.getElementById("check-button")
+                        if (!child) {
+                            parent.insertAdjacentHTML("afterbegin", '<p><a href="/admin" class="btn btn-dark" id="check-button">Админка</a></p>');
+                        }
+
+                    }
                 }
             } catch (error) {
                 console.error('Auth error:', error);
                 setError(error.message);
             }
+
         };
         authenticate();
     }, [access_token, navigate]);

@@ -32,7 +32,7 @@ footer {
     align-items: center;
     border: 1px maroon solid;
     background-color: coral;
-    margin: 10px 0 auto;
+    margin: 10px 0 10px;
     border-radius: 15px;
     height: 80px;
 }

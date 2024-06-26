@@ -10,6 +10,7 @@ import Logout from "./pages/Logout";
 import {RegisterPage} from "./pages/Register";
 import {Library} from "./pages/secondary/Library";
 import {Order} from "./pages/secondary/Order";
+import {AdminPage, AddBookPage} from './pages/admin';
 
 
 const router = createBrowserRouter(
@@ -67,6 +68,26 @@ const router = createBrowserRouter(
                 <>
                     <header><Header/></header>
                     <RequireAuth><Order/></RequireAuth>
+                    <footer><Footer/></footer>
+                </>
+            )
+        },
+        {
+            path: "/admin",
+            element: (
+                <>
+                    <header><Header/></header>
+                    <RequireAuth><AdminPage/></RequireAuth>
+                    <footer><Footer/></footer>
+                </>
+            )
+        },
+        {
+            path: "/add-book",
+            element: (
+                <>
+                    <header><Header/></header>
+                    <RequireAuth><AddBookPage/></RequireAuth>
                     <footer><Footer/></footer>
                 </>
             )

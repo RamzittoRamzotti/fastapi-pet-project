@@ -38,5 +38,6 @@ class BookSchema(BaseModel):
 
     title: str
     author: str
+    description: str
     title_picture: str
-    user_id: int
+    user_id: int | None = None

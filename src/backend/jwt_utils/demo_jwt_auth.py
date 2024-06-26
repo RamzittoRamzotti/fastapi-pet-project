@@ -49,6 +49,7 @@ def auth_user_check_self_info(
     return {
         'username': user.username,
         'email': user.email,
+        'admin': user.admin,
         'logged_in': iat
     }
 

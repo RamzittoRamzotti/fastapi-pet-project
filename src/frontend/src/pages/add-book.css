@@ -1,0 +1,81 @@
+.loginForm {
+    font-family: cursive;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-content: space-around;
+}
+
+.input-div > button {
+    margin: 30px 0 0;
+    width: 150px;
+    font-size: 20px;
+}
+
+.input-div > label {
+    text-outline: maroon 2px;
+    font-size: 20px;
+}
+
+.input-div {
+    margin-top: 20px;
+    font-size: 20px;
+    width: 400px;
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.add-book {
+    color: burlywood;
+    text-color: maroon;
+    text-decoration: none;
+    font-family: cursive;
+    width: 100%;
+}
+
+.main-div {
+    font-family: cursive;
+    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 300px;
+    border: mistyrose solid 2px;
+    border-radius: 10px;
+    background-color: cornsilk;
+}
+
+.main-div:hover {
+    background-color: wheat;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    max-width: 1400px;
+    height: 100%;
+    font-size: 14px;
+    text-size-adjust: auto;
+
+}
+
+.main-div-form {
+    font-family: cursive;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 500px;
+    border: mistyrose solid 2px;
+    border-radius: 10px;
+    background-color: cornsilk;
+}
+
+.btns {
+    margin: auto;
+}
