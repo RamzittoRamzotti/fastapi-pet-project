@@ -54,6 +54,13 @@ def auth_user_check_self_info(
     }
 
 
+@router.get("/users/id/")
+async def get_user_id(user: UserSchema = Depends(get_current_active_auth_user)):
+    user_db = await get_user_from_db_by_username(user.username)
+    print(user_db)
+    return {'user_id': user_db.id}
+
+
 @router.post('/refresh/', response_model=TokenInfo, response_model_exclude_none=True)
 def auth_refresh_jwt(user: UserSchema = Depends(get_current_auth_user_for_refresh)):
     access_token = create_access_token(user)

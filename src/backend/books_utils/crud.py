@@ -1,5 +1,5 @@
 from fastapi import Depends
-from sqlalchemy import select, insert
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 from sqlalchemy.sql.functions import count, func
 
@@ -32,7 +32,7 @@ books = [
         author="Эрих Мария Ремарк",
         title="На западном фронте без перемен",
         title_picture="remark.jpg",
-        description="""Hоман Эриха Марии Ремарка, опубликованный в газетном варианте в 1928 году, а отдельной книгой в 1929 году. В предисловии автор говорит: «Эта книга не является ни обвинением, ни исповедью. Это только попытка рассказать о поколении, которое погубила война, о тех, кто стал её жертвой, даже если спасся от снарядов». Название романа — несколько изменённая формулировка из немецких сводок о ходе военных действий на Западном фронте[1].
+        description="""Роман Эриха Марии Ремарка, опубликованный в газетном варианте в 1928 году, а отдельной книгой в 1929 году. В предисловии автор говорит: «Эта книга не является ни обвинением, ни исповедью. Это только попытка рассказать о поколении, которое погубила война, о тех, кто стал её жертвой, даже если спасся от снарядов». Название романа — несколько изменённая формулировка из немецких сводок о ходе военных действий на Западном фронте[1].
 Ремарк описывает события войны от лица простого солдата. Пауль Боймер, протагонист романа, появляется в самом начале повествования — именно его рассказ вводит читателя в обстоятельства действия. Ремарк делает похожими характеристики Боймера и других персонажей, отмечая их одинаковый возраст, взгляды и т. п. По его собственному выражению, «таким образом он говорил от лица целого поколения».
 Описывая ужасы войны, роман Ремарка стоит в остром противоречии с превалировавшей в эпоху Веймарской республики правоконсервативной военной литературой, которая, как правило, старалась оправдать проигранную Германией войну и героизировать её солдат.""",
     ),
@@ -74,3 +74,40 @@ async def add_book_db(book: BookSchema):
             session.add(books)
             await session.commit()
             return True
+
+
+async def delete_book_db(book_id: int):
+    async with async_session() as session:
+        async with session.begin():
+            book = session.query(Book).filter(Book.id == book_id).first()
+            if book:
+                await session.delete(book)
+                await session.commit()
+                return True
+            else:
+                return False
+
+
+async def get_book_by_id(book_id: int):
+    async with async_session() as session:
+        async with session.begin():
+            query = select(Book).where(Book.id == book_id)
+            result = await session.execute(query)
+            return result.scalar_one_or_none()
+
+
+async def update_book_db(book: Book):
+    async with async_session() as session:
+        async with session.begin():
+            query = update(Book).where(Book.id == book.id).values(**book.as_dict())
+            result = await session.execute(query)
+            await session.commit()
+            return True
+
+
+async def search_book_db(text: str):
+    async with async_session() as session:
+        async with session.begin():
+            query = select(Book).where(Book.title.ilike("%" + text + "%") | Book.author.ilike("%" + text + "%"))
+            result = await session.execute(query)
+            return result.scalars().all()

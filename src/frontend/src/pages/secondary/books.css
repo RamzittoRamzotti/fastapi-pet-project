@@ -16,6 +16,10 @@ main {
     margin: 10px;
 }
 
+.ul-align {
+    width: 100%;
+}
+
 .book-div {
     margin: 10px;
     display: flex;

@@ -30,3 +30,13 @@ class Book(Base):
 
     def __repr__(self):
         return f'Books(id={self.id}, title={self.title}, author={self.author})'
+
+    def as_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'author': self.author,
+            'title_picture': self.title_picture,
+            'description': self.description,
+            'user_id': self.user_id
+        }

@@ -11,7 +11,7 @@ export function AdminPage() {
     }
     const handleFoo = (event) => {
         event.preventDefault();
-        alert("Это пасхалка!")
+        return navigate('/update-delete')
     }
     return (
         <main>
@@ -19,7 +19,7 @@ export function AdminPage() {
                 <p>Добавить книгу</p>
             </div>
             <div className="main-div" onClick={handleFoo}>
-                <p>foo</p>
+                <p>Изменить/удалить книгу</p>
             </div>
         </main>
     );

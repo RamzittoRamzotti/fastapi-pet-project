@@ -1,5 +1,6 @@
 .loginForm {
     font-family: cursive;
+    height: 200px;
 
     display: flex;
     flex-direction: column;
@@ -68,12 +69,15 @@ main {
     width: 80%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     height: 500px;
     border: mistyrose solid 2px;
     border-radius: 10px;
     background-color: cornsilk;
+}
+
+.main-div-form > h2 {
+    margin-top: 50px;
 }
 
 .btns {

@@ -36,8 +36,8 @@ class UserSchema(BaseModel):
 class BookSchema(BaseModel):
     model_config = ConfigDict(strict=True)
 
-    title: str
-    author: str
-    description: str
-    title_picture: str
+    title: str | None
+    author: str | None
+    description: str | None
+    title_picture: str | None
     user_id: int | None = None

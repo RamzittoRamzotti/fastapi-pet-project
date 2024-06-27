@@ -11,7 +11,8 @@ import {RegisterPage} from "./pages/Register";
 import {Library} from "./pages/secondary/Library";
 import {Order} from "./pages/secondary/Order";
 import {AdminPage, AddBookPage} from './pages/admin';
-
+import {UpdateDeletePage} from './pages/update-delete';
+import UpdateBookPage from "./pages/UpdateBook";
 
 const router = createBrowserRouter(
     [
@@ -88,6 +89,25 @@ const router = createBrowserRouter(
                 <>
                     <header><Header/></header>
                     <RequireAuth><AddBookPage/></RequireAuth>
+                    <footer><Footer/></footer>
+                </>
+            )
+        }, {
+        path: "/update-delete",
+        element: (
+            <>
+                <header><Header/></header>
+                <RequireAuth><UpdateDeletePage/></RequireAuth>
+                <footer><Footer/></footer>
+            </>
+        )
+    },
+        {
+            path: "/update-book/:book_id",
+            element: (
+                <>
+                    <header><Header/></header>
+                    <RequireAuth><UpdateBookPage/></RequireAuth>
                     <footer><Footer/></footer>
                 </>
             )

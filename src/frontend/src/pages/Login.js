@@ -83,7 +83,7 @@ export function LoginPage() {
     );
 }
 
-async function RefreshToken(navigate, setError, setAccessToken) {
+export async function RefreshToken(navigate, setError, setAccessToken) {
     const refresh_token = localStorage.getItem('refresh_token');
     try {
         const response = await fetch('http://localhost:5000/login/refresh/', {
@@ -101,6 +101,7 @@ async function RefreshToken(navigate, setError, setAccessToken) {
         } else {
             localStorage.setItem('access_token', token.access_token);
             setAccessToken(token.access_token);
+            return token.access_token;
         }
     } catch (error) {
         console.error('auth error:', error);
@@ -130,7 +131,7 @@ export function RequireAuth({children}) {
                 const data = await response.json();
                 if (data.detail) {
                     console.log("Session needs refresh");
-                    await RefreshToken(navigate, setError, setAccessToken);
+                    const token = await RefreshToken(navigate, setError, setAccessToken);
                 } else {
                     console.log("Auth success: ", data);
                     if (data.admin) {
