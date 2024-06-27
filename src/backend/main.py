@@ -1,11 +1,12 @@
-from fastapi import FastAPI, HTTPException, Form, UploadFile
+from fastapi import FastAPI, HTTPException, Form, UploadFile, Query
 from fastapi.openapi.models import Response
 from starlette import status
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from typing_extensions import Annotated
+from typing_extensions import Annotated, Optional
 
 from src.backend.books_utils.books import books_router
+from src.backend.books_utils.crud import search_book_db
 from src.backend.jwt_utils.validation import is_admin
 from src.backend.jwt_utils.demo_jwt_auth import router
 

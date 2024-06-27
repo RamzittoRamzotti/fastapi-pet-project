@@ -7,7 +7,7 @@ export function UpdateDeletePage() {
     let navigate = useNavigate();
     const [books, setBooks] = useState([]);  // Ensure initial state is always an array
     const [text, setText] = useState("");
-
+    const [access_token, setAccessToken] = useState(localStorage.getItem('access_token'));
     const handleDelete = async (book_id) => {
         try {
             const response = await fetch(`http://localhost:5000/books/?book_id=${book_id}`, {
@@ -33,9 +33,13 @@ export function UpdateDeletePage() {
     const handleSearch = async (event) => {
         event.preventDefault();
         if (text) {
+            console.log(text);
             try {
-                const response = await fetch(`http://localhost:5000/books/search?text=${encodeURIComponent(text)}`, {
-                    method: "GET"
+                const response = await fetch(`http://localhost:5000/books/search/?text=${text}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`
+                    }
                 });
                 const data = await response.json();
                 if (!data['detail']) {

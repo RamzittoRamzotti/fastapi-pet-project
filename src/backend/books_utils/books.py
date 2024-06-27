@@ -3,7 +3,7 @@ import shutil
 from fastapi import Query, HTTPException, Form, UploadFile, File, Path
 from sqlalchemy import null
 from starlette import status
-from typing_extensions import Annotated
+from typing_extensions import Annotated, Optional
 from src.backend.models import Book
 from src.backend.books_utils.crud import (get_all_books,
                                           add_book_db,
@@ -110,7 +110,8 @@ async def update_book(
     return {"result": updated_book}
 
 
-@books_router.get("/search")
-async def search_book(text: Annotated[str | None, Query()] = None):
+@books_router.get("/search/")
+async def search_book(text: Optional[str] = Query(default=None, min_length=1)):
+    print(text)
     books = await search_book_db(text)
     return {'books': books}
