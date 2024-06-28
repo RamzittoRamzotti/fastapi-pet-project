@@ -12,8 +12,8 @@ from src.backend.books_utils.crud import (get_all_books,
                                           search_book_db, update_book_db)
 
 from fastapi import APIRouter
-
 from src.backend.schemas import BookSchema
+from src.backend.tasks import send_mail
 
 books_router = APIRouter(prefix="/books", tags=["books"])
 
@@ -115,3 +115,16 @@ async def search_book(text: Optional[str] = Query(default=None, min_length=1)):
     print(text)
     books = await search_book_db(text)
     return {'books': books}
+
+
+@books_router.patch("/reserve_book/{book_id}")
+async def reserve_book(
+        book_id: int,
+        email: str = Form(),
+        user_id: int = Form()):
+    old_book = await get_book_by_id(book_id)
+    old_book.user_id = user_id
+    updated_book = await update_book_db(old_book)
+    book_schema = BookSchema(**old_book.as_dict())
+    send_mail.delay(email, book_schema)
+    return {"result": updated_book}

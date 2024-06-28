@@ -30,6 +30,11 @@
     flex-direction: column;
     justify-content: space-evenly;
     align-content: space-around;
+    
+}
+
+.forms-div {
+    width: 300px;
 }
 
 .input-div > button {

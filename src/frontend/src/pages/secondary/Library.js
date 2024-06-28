@@ -65,7 +65,7 @@ export function Library() {
             const formData = new FormData();
             formData.append("user_id", user_id);
 
-            const response_ = await fetch(`http://localhost:5000/books/update_book/${book_id}`, {
+            const response_ = await fetch(`http://localhost:5000/books/reserve_book/${book_id}`, {
                 method: "PATCH",
                 headers: {
                     'Authorization': `Bearer ${access_tokens}`,

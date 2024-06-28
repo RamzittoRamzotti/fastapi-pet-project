@@ -10,7 +10,7 @@ export function Order() {
 
     const handleBook = async (book_id) => {
         try {
-            const response = await fetch(`http://localhost:5000/books/update_book/${book_id}`, {
+            const response = await fetch(`http://localhost:5000/books/reserve_book/${book_id}`, {
                 method: "PATCH",
                 headers: {
                     'Authorization': `Bearer ${access_token}`,

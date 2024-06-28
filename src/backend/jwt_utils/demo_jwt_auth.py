@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from fastapi.security import (
     HTTPBearer)
 from starlette import status
+from src.backend.tasks import Celery
 
 from src.backend.models import User
 from .crud import get_user_from_db_by_username, get_user_from_db_by_email, insert_new_user
@@ -57,8 +58,7 @@ def auth_user_check_self_info(
 @router.get("/users/id/")
 async def get_user_id(user: UserSchema = Depends(get_current_active_auth_user)):
     user_db = await get_user_from_db_by_username(user.username)
-    print(user_db)
-    return {'user_id': user_db.id}
+    return {'user_id': user_db.id, 'email': user.email}
 
 
 @router.post('/refresh/', response_model=TokenInfo, response_model_exclude_none=True)
