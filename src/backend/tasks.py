@@ -26,7 +26,7 @@ def create_mail(recipient, body):
                 <ul>
                     <li>{body['title']}</li>
                     <li>{body['author']}</li>
-                    <li><img src="http://localhost:5000/images/{body['title_picture']}" alt="{body['title']}"/></li>
+                    <li><img src="../frontend/public/images/{body['title_picture']}" alt="{body['title']}"/></li>
                 </ul>'
         """
     msg.set_content(html_content, subtype='html')

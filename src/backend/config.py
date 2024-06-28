@@ -23,6 +23,20 @@ class DBSettings(BaseModel):
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
 
+class CelerySettings(BaseModel):
+    celery_broker_url: str = os.getenv('CELERY_BROKER_URL')
+    config_celery: dict = {
+        'CELERY_ENABLE_UTC': True,
+        'CELERY_SEND_TASK_SENT_EVENT': True,
+        'CELERY_RESULT_BACKEND': 'redis://localhost:6379/0',
+        'CELERY_TASK_SERIALIZER': 'pickle',
+        'CELERY_RESULT_SERIALIZER': 'pickle',
+        'CELERY_ACCEPT_CONTENT': ['pickle', 'json'],
+    }
+    mail: str = os.getenv('mail')
+    password: str = os.getenv('password')
+
+
 class AuthJWT(BaseModel):
     private_key_path: str = BASE_DIR / "backend" / "certs" / "jwt_private.pem"
     public_key_path: str = BASE_DIR / "backend" / "certs" / "jwt_public.pem"
@@ -34,6 +48,7 @@ class AuthJWT(BaseModel):
 class Settings(BaseSettings):
     auth_jwt: AuthJWT = AuthJWT()
     db: DBSettings = DBSettings()
+    celery: CelerySettings = CelerySettings()
 
 
 settings = Settings()
