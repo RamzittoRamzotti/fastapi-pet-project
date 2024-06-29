@@ -52,17 +52,6 @@
     background-color: wheat;
 }
 
-main {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    max-width: 1400px;
-    height: 100%;
-    font-size: 14px;
-    text-size-adjust: auto;
-
-}
 
 .main-div-form {
     font-family: cursive;
@@ -82,4 +71,22 @@ main {
 
 .btns {
     margin: auto;
+}
+
+.main-admin {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.main-add-book {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#button-shift {
+    margin-right: 10px;
 }

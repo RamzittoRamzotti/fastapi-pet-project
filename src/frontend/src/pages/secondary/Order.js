@@ -10,49 +10,64 @@ export function Order() {
 
     const handleBook = async (book_id) => {
         try {
-            const response = await fetch(`http://localhost:5000/books/reserve_book/${book_id}`, {
+            const response_ = await fetch('http://localhost:5000/api/login/users/id/', {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${access_token}`,
+                    'Accept': 'application/json'
+                }
+            });
+            const users = await response_.json();
+            if (!users['user_id']) {
+                throw new Error("Failed to fetch user data.");
+            }
+
+            const user_id = users['user_id'];
+            const email = users['email'];
+            const formData = new FormData();
+            formData.append("user_id", user_id);
+            formData.append("email", email);
+            const response = await fetch(`http://localhost:5000/api/books/reserve_book/${book_id}`, {
                 method: "PATCH",
                 headers: {
                     'Authorization': `Bearer ${access_token}`,
-                }
+                },
+                body: formData,
             });
             const data = await response.json();
-            if (!response.ok) {
+            if (data['detail']) {
                 throw new Error("Не удалось забронировать книгу!");
             }
             alert("Книга успешно забронирована!");
-            navigate("/library");
+            return navigate("/library");
         } catch (error) {
             alert(error.message);
-            navigate("/library");
+            return navigate("/library");
         }
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
+    const handleSearch = async (event) => {
+        event.preventDefault();
+        if (text) {
+            console.log(text);
             try {
-                const response = await fetch(`http://localhost:5000/books/search?text=${text}`, {
-                    method: "GET"
+                const response = await fetch(`http://localhost:5000/api/books/search/?text=${text}`, {
+                    method: "GET",
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`
+                    }
                 });
                 const data = await response.json();
-                if (!response.ok) {
-                    throw new Error(data.detail || "Ошибка при поиске книг.");
+                if (!data['detail']) {
+                    setBooks(data['books']);
+                } else {
+                    throw new Error(data['detail'] || "Failed to fetch books.");
                 }
-                setBooks(data.books);
             } catch (error) {
-                console.error(error);
+                console.error("Error:", error);
                 alert(error.message);
-                navigate('/error'); // Redirect to an error page or handle differently
             }
-        };
-
-        if (text) {
-            fetchData();
         }
-    }, [text, navigate]);
-
-    const handleSearch = (event) => {
-        event.preventDefault(); // To prevent form submission from reloading the page
     };
 
     return (

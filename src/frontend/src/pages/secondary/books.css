@@ -59,3 +59,10 @@ main {
     width: 100%;
     margin: 0 auto 0;
 }
+
+.main-update-delete {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}

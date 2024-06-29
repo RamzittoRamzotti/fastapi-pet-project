@@ -1,0 +1,45 @@
+
+.loginForm {
+    font-family: cursive;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-content: space-around;
+
+}
+
+.input-div > button {
+    margin: 30px 0 0;
+    width: 150px;
+    font-size: 20px;
+}
+
+.input-div > label {
+    text-outline: maroon 2px;
+    font-size: 20px;
+}
+
+.input-div {
+    margin-top: 20px;
+    font-size: 20px;
+    width: 400px;
+    display: flex;
+
+    justify-content: space-between;
+}
+
+.main-update {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.main-update > h2 {
+    margin-top: 100px;
+}
+
+.main-update > form {
+    margin-top: 20px;
+}

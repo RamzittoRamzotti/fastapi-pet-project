@@ -49,7 +49,7 @@ export function RegisterForm({onRegister}) {
                 </div>
                 <div className="input-div">
                     <button onClick={handleReset} className="btn btn-light">Back to login</button>
-                    
+
                     <button type="submit" className="btn btn-success ">Submit</button>
                 </div>
             </form>
@@ -63,7 +63,7 @@ export function RegisterPage() {
     let data;
     const handleRegister = async (username, email, password) => {
         try {
-            const response = await fetch('http://localhost:5000/login/register/', {
+            const response = await fetch('http://localhost:5000/api/login/register/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

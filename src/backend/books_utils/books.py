@@ -50,13 +50,16 @@ async def add_book(title: str = Form(),
                    author: str = Form(),
                    desc: str = Form(),
                    img: UploadFile = File(...)):
-    with open(f'src/frontend/public/images/{img.filename}', "wb+") as file:
+    filename = img.filename
+    if filename.endswith(".jpeg"):
+        filename.replace(".jpeg", ".jpg")
+    with open(f'src/frontend/public/images/{filename}', "wb+") as file:
         shutil.copyfileobj(img.file, file)
     book = BookSchema(
         title=title,
         author=author,
         description=desc,
-        title_picture=img.filename,
+        title_picture=filename,
     )
     result = await add_book_db(book)
     if result:
@@ -72,7 +75,7 @@ async def add_book(title: str = Form(),
 async def delete_book(book_id: int):
     result = await delete_book_db(book_id=book_id)
     if result:
-        return status.HTTP_200_SUCCESS
+        return status.HTTP_200_OK
     else:
         HTTPException(
             status=status.HTTP_500_INTERNAL_SERVER_ERROR,
@@ -82,17 +85,14 @@ async def delete_book(book_id: int):
 
 @books_router.patch("/update_book/{book_id}")
 async def update_book(
-        book_id: int = Path(),
+        book_id: str = Path(),
         title: str | None = Form(default=None),
         author: str | None = Form(default=None),
         desc: str | None = Form(default=None),
-        img: UploadFile | None = File(default=None),
-        user_id: int | None = Form(default=None)):
-    old_book = await get_book_by_id(book_id)
-    print(old_book)
+        img: UploadFile | None = File(default=None)):
+    old_book = await get_book_by_id(int(book_id))
     if not old_book:
         raise HTTPException(status_code=404, detail="Book not found")
-
     if title is not None:
         old_book.title = title
     if author is not None:
@@ -100,12 +100,12 @@ async def update_book(
     if desc is not None:
         old_book.desc = desc
     if img:
-        with open(f'src/frontend/public/images/{img.filename}', "wb+") as file:
+        filesname = img.filename
+        if filesname.endswith(".jpeg"):
+            filesname.replace(".jpeg", ".jpg")
+        with open(f'src/frontend/public/images/{filesname}', "wb+") as file:
             shutil.copyfileobj(img.file, file)
-        image_filename = img.filename
-        old_book.title_picture = image_filename
-    if user_id is not None:
-        old_book.user_id = user_id
+        old_book.title_picture = filesname
     updated_book = await update_book_db(old_book)
     return {"result": updated_book}
 

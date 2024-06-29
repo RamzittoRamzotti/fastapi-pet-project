@@ -79,7 +79,9 @@ async def add_book_db(book: BookSchema):
 async def delete_book_db(book_id: int):
     async with async_session() as session:
         async with session.begin():
-            book = session.query(Book).filter(Book.id == book_id).first()
+            query = select(Book).where(Book.id == book_id)
+            result = await session.execute(query)
+            book = result.scalar_one_or_none()
             if book:
                 await session.delete(book)
                 await session.commit()

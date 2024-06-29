@@ -1,16 +1,16 @@
 import React, {useState, useEffect} from "react";
-import "./secondary/books.css";
+import "../secondary/books.css";
 import "./add-book.css";
 import {useNavigate} from "react-router-dom";
 
 export function UpdateDeletePage() {
     let navigate = useNavigate();
-    const [books, setBooks] = useState([]);  // Ensure initial state is always an array
+    const [books, setBooks] = useState([]);
     const [text, setText] = useState("");
     const [access_token, setAccessToken] = useState(localStorage.getItem('access_token'));
     const handleDelete = async (book_id) => {
         try {
-            const response = await fetch(`http://localhost:5000/books/?book_id=${book_id}`, {
+            const response = await fetch(`http://localhost:5000/api/books/${book_id}`, {
                 method: "DELETE"
             });
             if (response.ok) {
@@ -35,7 +35,7 @@ export function UpdateDeletePage() {
         if (text) {
             console.log(text);
             try {
-                const response = await fetch(`http://localhost:5000/books/search/?text=${text}`, {
+                const response = await fetch(`http://localhost:5000/api/books/search/?text=${text}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${access_token}`
@@ -55,7 +55,7 @@ export function UpdateDeletePage() {
     };
 
     return (
-        <main>
+        <main className="main-update-delete">
             <form className="loginForm" onSubmit={handleSearch}>
                 <label htmlFor="text">Поиск книги:</label>
                 <input
@@ -76,7 +76,9 @@ export function UpdateDeletePage() {
                         <li>Автор: {book.author}</li>
                         <li>{book.description}</li>
                         <li>
-                            <button className="btn btn-dark" onClick={() => handleUpdate(book.id)}>Изменить</button>
+                            <button className="btn btn-dark" onClick={() => handleUpdate(book.id)}
+                                    id="button-shift">Изменить
+                            </button>
                             <button className="btn btn-danger" onClick={() => handleDelete(book.id)}>Удалить</button>
                         </li>
                     </ul>

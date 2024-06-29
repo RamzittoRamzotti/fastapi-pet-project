@@ -10,9 +10,9 @@ import Logout from "./pages/Logout";
 import {RegisterPage} from "./pages/Register";
 import {Library} from "./pages/secondary/Library";
 import {Order} from "./pages/secondary/Order";
-import {AdminPage, AddBookPage} from './pages/admin';
-import {UpdateDeletePage} from './pages/update-delete';
-import UpdateBookPage from "./pages/UpdateBook";
+import {AdminPage, AddBookPage} from './pages/admin/admin';
+import {UpdateDeletePage} from './pages/admin/update-delete';
+import UpdateBookPage from "./pages/update/UpdateBook";
 
 const router = createBrowserRouter(
     [

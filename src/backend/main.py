@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI, HTTPException, Form, UploadFile, Query
 from fastapi.openapi.models import Response
 from starlette import status
@@ -11,7 +12,7 @@ from src.backend.jwt_utils.validation import is_admin
 from src.backend.jwt_utils.demo_jwt_auth import router
 
 app = FastAPI()
-app.mount("/images", StaticFiles(directory="src/frontend/public/images"), name="images")
+app.mount("/images", StaticFiles(directory="../frontend/public/images"), name="images")
 app.include_router(router)
 app.include_router(books_router)
 origins = [
@@ -43,6 +44,7 @@ async def check_admin():
             detail="Not authorized",
         )
 
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=5005)
+
+if __name__ == "__main__":
+    uvicorn.run(app, port=5000)
 #  uvicorn src.backend.main:app --port 5000 --reload
