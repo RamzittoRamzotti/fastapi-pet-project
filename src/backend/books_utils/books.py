@@ -1,19 +1,18 @@
 import shutil
+import sys
 
 from fastapi import Query, HTTPException, Form, UploadFile, File, Path
-from sqlalchemy import null
 from starlette import status
-from typing_extensions import Annotated, Optional
-from src.backend.models import Book
-from src.backend.books_utils.crud import (get_all_books,
-                                          add_book_db,
-                                          get_book_by_id,
-                                          delete_book_db,
-                                          search_book_db, update_book_db)
+from typing_extensions import Optional
+from books_utils.crud import (get_all_books,
+                              add_book_db,
+                              get_book_by_id,
+                              delete_book_db,
+                              search_book_db, update_book_db)
 
 from fastapi import APIRouter
-from src.backend.schemas import BookSchema
-from src.backend.tasks import send_mail
+from internal.schemas import BookSchema
+from internal.tasks import send_mail
 
 books_router = APIRouter(prefix="/books", tags=["books"])
 

@@ -1,21 +1,24 @@
+import asyncio
+import os
 import sys
 
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
-from src.backend.database import engine
-from src.backend.schemas import UserSchema
-from src.backend.jwt_utils import utils as auth_utils
-from src.backend.models import User
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from internal.database import engine
+from internal.schemas import UserSchema
+from jwt_utils import utils as auth_utils
+from internal.models import User
 from sqlalchemy import select, insert
 
 async_session = async_sessionmaker(bind=engine, expire_on_commit=False, class_=AsyncSession)
-
-sys.path.append('C:\\Users\\1\\PycharmProjects\\blog_platform\\src\\backend')
-
 john = User(
     username='john',
     password=auth_utils.hash_password('qwerty'),
     email='john@mail.ru',
+    admin=True
+
 )
 sam = User(
     username='sam',
@@ -39,7 +42,7 @@ async def get_user_from_db_by_username(username: str):
             return result
 
 
-# uvicorn src.backend.main:app --port 5000 --reload
+# uvicorn internal.backend.main:app --port 5000 --reload
 
 
 async def get_user_from_db_by_email(email: str):
@@ -69,4 +72,6 @@ async def get_admin(user: UserSchema):
             if result.is_admin:
                 return result
 
-# asyncio.run(initial_inserts_books())
+
+if __name__ == '__main__':
+    asyncio.run(initial_inserts_users())

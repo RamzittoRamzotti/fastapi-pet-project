@@ -43,7 +43,7 @@ function AddBookForm() {
             try {
                 console.log(formData['title'])
 
-                const response = fetch("http://localhost:5000/api/books/add_book", {
+                const response = fetch("http://localhost:5000/books/add_book", {
                     method: "POST",
                     headers: {
                         'Authorization': `Bearer ${access_token}`,

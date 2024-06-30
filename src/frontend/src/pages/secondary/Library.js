@@ -49,7 +49,7 @@ export function Library() {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/api/login/users/id/', {
+            const response = await fetch('http://localhost:5000/login/users/id/', {
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${access_tokens}`,
@@ -67,7 +67,7 @@ export function Library() {
             const formData = new FormData();
             formData.append("user_id", user_id);
             formData.append("email", email);
-            const response_ = await fetch(`http://localhost:5000/api/books/reserve_book/${book_id}`, {
+            const response_ = await fetch(`http://localhost:5000/books/reserve_book/${book_id}`, {
                 method: "PATCH",
                 headers: {
                     'Authorization': `Bearer ${access_tokens}`,
@@ -101,7 +101,7 @@ export function Library() {
                 <div className="book-div">
                     {books.map((book) => (
                             <ul className="ul-align">
-                                <img src={`http://localhost:5000/api/images/${book.title_picture}`} alt={book['title']}
+                                <img src={`http://localhost:5000/images/${book.title_picture}`} alt={book['title']}
                                      className="book-image"/>
                                 <li key={book['id']}>Название книги: {book['title']}</li>
                                 <li>Автор: {book['author']}</li>
@@ -137,7 +137,7 @@ async function Auth(access_token, setAccessToken, navigate, setError) {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/api/login/users/me/', {
+        const response = await fetch('http://localhost:5000/login/users/me/', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${access_token}`,

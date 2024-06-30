@@ -3,14 +3,14 @@ from fastapi.params import Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jwt import ExpiredSignatureError
 from starlette import status
-from typing import Annotated, Optional
+from typing import Annotated
 
 from typing_extensions import Doc
 
-from src.backend.jwt_utils import utils as auth_utils
-from .crud import get_user_from_db_by_username, get_user_from_db_by_email, get_admin
-from .helpers import TOKEN_TYPE_FIELD, ACCESS_TOKEN_TYPE, REFRESH_TOKEN_TYPE
-from src.backend.schemas import UserSchema
+from jwt_utils import utils as auth_utils
+from jwt_utils.crud import get_user_from_db_by_username, get_user_from_db_by_email, get_admin
+from jwt_utils.helpers import TOKEN_TYPE_FIELD, ACCESS_TOKEN_TYPE, REFRESH_TOKEN_TYPE
+from internal.schemas import UserSchema
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login/auth/")
 
@@ -120,7 +120,7 @@ class OAuth2PasswordRequestFormExtended(OAuth2PasswordRequestForm):
         )
 
 
-# uvicorn src.backend.main:app --port 5005 --reload
+# uvicorn internal.backend.main:app --port 5005 --reload
 
 def get_current_token_payload(
         token: str = Depends(oauth2_scheme)

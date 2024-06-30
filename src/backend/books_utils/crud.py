@@ -1,11 +1,15 @@
-from fastapi import Depends
+import asyncio
+import os
+import sys
+
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
-from sqlalchemy.sql.functions import count, func
+from sqlalchemy.sql.functions import func
 
-from src.backend.database import engine
-from src.backend.models import Book
-from src.backend.schemas import BookSchema
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from internal.database import engine
+from internal.models import Book
+from internal.schemas import BookSchema
 
 async_session = async_sessionmaker(bind=engine, expire_on_commit=False, class_=AsyncSession)
 
@@ -113,3 +117,7 @@ async def search_book_db(text: str):
             query = select(Book).where(Book.title.ilike("%" + text + "%") | Book.author.ilike("%" + text + "%"))
             result = await session.execute(query)
             return result.scalars().all()
+
+
+if __name__ == '__main__':
+    asyncio.run(initial_inserts_books())

@@ -86,7 +86,7 @@ export function LoginPage() {
 export async function RefreshToken(navigate, setError, setAccessToken) {
     const refresh_token = localStorage.getItem('refresh_token');
     try {
-        const response = await fetch('http://localhost:5000/api/login/refresh/', {
+        const response = await fetch('http://localhost:5000/login/refresh/', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${refresh_token}`,
@@ -120,7 +120,7 @@ export function RequireAuth({children}) {
         }
         const authenticate = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/login/users/me/', {
+                const response = await fetch('http://localhost:5000/login/users/me/', {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${access_token}`,

@@ -4,36 +4,53 @@ services:
   backend:
     container_name: backend
     build:
-      context: ./backend
+      context: ./
+    env_file: ./backend/.env
+    ports:
+      - "5000:5000"
     networks:
       app-network:
         ipv4_address: 172.21.0.2
+    depends_on:
+      - redis
+      - postgres
 
+
+  celery:
+    container_name: celery
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.celery
+    env_file: ./backend/.env
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      app-network:
+        ipv4_address: 172.21.0.7
 
   nginx:
     container_name: nginx
     build:
-      context: .
+      context: ./frontend
     ports:
       - "80:80"
     networks:
       app-network:
         ipv4_address: 172.21.0.4
-    depends_on:
-      - frontend
 
-  db:
-    container_name: db
-    image: postgres:latest
+  postgres:
+    container_name: postgres
+    image: postgres:16.3
     restart: always
-    environment:
-      POSTGRES_DB: dbpostgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+    env_file:
+      - ./backend/.env
     ports:
       - "5432:5432"
-    volumes:
-      - ./db:/var/lib/postgresql/data
+
+    networks:
+      app-network:
+        ipv4_address: 172.21.0.6
 
   redis:
     container_name: redis

@@ -1,25 +1,25 @@
-from typing import Annotated
+import os
+import sys
 
 from fastapi import APIRouter, HTTPException
-from fastapi.params import Depends, Form
+from fastapi.params import Depends
 from pydantic import BaseModel
 from fastapi.security import (
     HTTPBearer)
 from starlette import status
-from src.backend.tasks import Celery
 
-from src.backend.models import User
-from .crud import get_user_from_db_by_username, get_user_from_db_by_email, insert_new_user
-from .utils import hash_password
-from .validation import get_current_token_payload, \
+from internal.models import User
+from jwt_utils.crud import get_user_from_db_by_username, get_user_from_db_by_email, insert_new_user
+from jwt_utils.utils import hash_password
+from jwt_utils.validation import get_current_token_payload, \
     get_current_auth_user_for_refresh, get_current_active_auth_user, validate_auth_user
-from .helpers import (
+from jwt_utils.helpers import (
     create_access_token,
     create_refresh_token)
-from src.backend.schemas import UserSchema
+from internal.schemas import UserSchema
 
 http_bearer = HTTPBearer(auto_error=False)
-
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
 router = APIRouter(prefix='/login', tags=['JWT'], dependencies=[Depends(http_bearer)])
 
 

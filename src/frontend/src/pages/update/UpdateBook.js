@@ -44,7 +44,7 @@ function UpdateBookPageForm({book_id}) {
             try {
                 console.log(formData.get('title'))
 
-                const response = await fetch(`http://localhost:5000/api/books/update_book/${book_id}`, {
+                const response = await fetch(`http://backend:5000/books/update_book/${book_id}`, {
                     method: "PATCH",
                     headers: {
                         'Authorization': `Bearer ${access_token}`,

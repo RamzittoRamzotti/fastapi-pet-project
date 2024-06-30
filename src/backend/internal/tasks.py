@@ -1,21 +1,16 @@
-import json
 import os
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from pathlib import Path
 
 from celery import Celery
-from email.message import EmailMessage
 import smtplib
 
-from dotenv import load_dotenv
+from internal.config import settings
 
-from src.backend.config import settings
-
-cel = Celery('tasks', broker='redis://localhost:6379/0')
+cel = Celery('tasks', broker='redis://redis:6379/0')
 cel.config_from_object(settings.celery.config_celery)
-cel.conf.broker_url = 'redis://localhost:6379/0'
+cel.conf.broker_url = 'redis://redis:6379/0'
 cel.conf.broker_connection_retry_on_startup = True
 
 
@@ -40,14 +35,14 @@ def create_mail(recipient, body):
             <ul>
                 <li><strong>Название:</strong> {body['title']}</li>
                 <li><strong>Автор:</strong> {body['author']}</li>
-                <li><img src="cid:image1" alt="{body['title']}"/></li>
+                <li><img internal="cid:image1" alt="{body['title']}"/></li>
             </ul>
         </body>
     </html>
     """
     msg.attach(MIMEText(html_content, 'html'))
 
-    img_path = os.path.join('./src/frontend/public/images',
+    img_path = os.path.join('./internal/frontend/public/images',
                             body['title_picture'])
     with open(img_path, 'rb') as img_file:
         img_data = img_file.read()

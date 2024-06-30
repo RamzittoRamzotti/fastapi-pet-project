@@ -2,7 +2,7 @@ import re
 from typing import Annotated, Optional
 
 from annotated_types import MinLen, MaxLen
-from pydantic import BaseModel, EmailStr, ConfigDict, validator, field_validator
+from pydantic import BaseModel, EmailStr, ConfigDict, field_validator
 
 
 class CreateUser(BaseModel):

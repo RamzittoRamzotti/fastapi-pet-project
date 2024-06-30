@@ -1,21 +1,17 @@
-FROM node:lts-alpine as build
+FROM python:3.12
 
-WORKDIR /app
+WORKDIR /app/src/
 
-COPY frontend/package*.json ./
-
-RUN npm install
-
-COPY . .
-
-RUN npm run build
-
-FROM nginx:alpine
+COPY backend ./backend
+COPY frontend/public/images ./frontend/public/images
 
 
-COPY ./frontend/.nginx/nginx.conf /etc/nginx/conf.d/default.conf
+WORKDIR /app/src/backend
 
-WORKDIR /usr/share/nginx/html
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+COPY backend/scr.sh /app/entrypoint.sh
+RUN chmod +x /app/entrypoint.sh
+
+ENTRYPOINT ["/app/entrypoint.sh"]

@@ -1,8 +1,8 @@
-from datetime import timedelta, datetime, UTC
+from datetime import timedelta, datetime
 
 import bcrypt
 import jwt
-from src.backend.config import settings
+from internal.config import settings
 
 
 def encode_jwt(payload: dict, private_key: str = settings.auth_jwt.private_key_path.read_text(),

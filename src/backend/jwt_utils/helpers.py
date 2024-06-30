@@ -1,8 +1,8 @@
 from datetime import timedelta
 
 from . import utils as auth_utils
-from src.backend.config import settings
-from src.backend.schemas import UserSchema
+from internal.config import settings
+from internal.schemas import UserSchema
 
 TOKEN_TYPE_FIELD = "type"
 ACCESS_TOKEN_TYPE = "access"
