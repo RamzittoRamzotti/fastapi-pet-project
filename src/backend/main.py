@@ -7,8 +7,6 @@ from starlette.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-
-from jwt_utils.validation import is_admin
 from jwt_utils.demo_jwt_auth import router
 from books_utils.books import books_router
 

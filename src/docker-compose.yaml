@@ -12,8 +12,9 @@ services:
       app-network:
         ipv4_address: 172.21.0.2
     depends_on:
-      - redis
       - postgres
+      - redis
+
 
 
   celery:

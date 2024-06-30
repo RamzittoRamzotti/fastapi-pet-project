@@ -8,6 +8,6 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 ENV C_FORCE_ROOT=1
 
-WORKDIR /app
 
-ENTRYPOINT ["celery", "-A", "src.backend.internal.tasks:cel", "worker", "--loglevel=info", "--pool=solo"]
+
+ENTRYPOINT ["celery", "-A", "internal.tasks:cel", "worker", "--loglevel=info", "--pool=solo"]
