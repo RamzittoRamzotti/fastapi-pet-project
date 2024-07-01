@@ -1,4 +1,5 @@
 import os
+import sys
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -6,7 +7,8 @@ from email.mime.text import MIMEText
 from celery import Celery
 import smtplib
 
-from internal.config import settings
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+from config import settings
 
 cel = Celery('tasks', broker='redis://redis:6379/0')
 cel.config_from_object(settings.celery.config_celery)
@@ -16,6 +18,7 @@ cel.conf.broker_connection_retry_on_startup = True
 
 def create_mail(recipient, body):
     msg = MIMEMultipart()
+    print(settings.celery.mail)
     msg['From'] = settings.celery.mail
     msg['To'] = recipient
     msg['Subject'] = "Бронирование книги"
@@ -42,7 +45,7 @@ def create_mail(recipient, body):
     """
     msg.attach(MIMEText(html_content, 'html'))
 
-    img_path = os.path.join('./internal/frontend/public/images',
+    img_path = os.path.join('../frontend/public/images',
                             body['title_picture'])
     with open(img_path, 'rb') as img_file:
         img_data = img_file.read()

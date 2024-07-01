@@ -2,7 +2,7 @@ import os
 from pathlib import Path
 
 from pydantic import BaseModel
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,14 +24,14 @@ class DBSettings(BaseModel):
 
 
 class CelerySettings(BaseModel):
-    celery_broker_url: str = os.getenv('CELERY_BROKER_URL')
     config_celery: dict = {
         'CELERY_ENABLE_UTC': True,
         'CELERY_SEND_TASK_SENT_EVENT': True,
-        'CELERY_RESULT_BACKEND': 'redis://localhost:6379/0',
+        'CELERY_RESULT_BACKEND': 'redis://redis:6379/0',
         'CELERY_TASK_SERIALIZER': 'pickle',
         'CELERY_RESULT_SERIALIZER': 'pickle',
         'CELERY_ACCEPT_CONTENT': ['pickle', 'json'],
+
     }
     mail: str = os.getenv('mail')
     password: str = os.getenv('password')

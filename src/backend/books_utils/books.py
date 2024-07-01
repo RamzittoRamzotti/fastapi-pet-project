@@ -52,7 +52,7 @@ async def add_book(title: str = Form(),
     filename = img.filename
     if filename.endswith(".jpeg"):
         filename.replace(".jpeg", ".jpg")
-    with open(f'src/frontend/public/images/{filename}', "wb+") as file:
+    with open(f'../frontend/public/images/{filename}', "wb+") as file:
         shutil.copyfileobj(img.file, file)
     book = BookSchema(
         title=title,
@@ -62,7 +62,7 @@ async def add_book(title: str = Form(),
     )
     result = await add_book_db(book)
     if result:
-        return result
+        return True
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

@@ -16,7 +16,7 @@ async_session = async_sessionmaker(bind=engine, expire_on_commit=False, class_=A
 john = User(
     username='john',
     password=auth_utils.hash_password('qwerty'),
-    email='john@mail.ru',
+    email='nice.elez@mail.ru',
     admin=True
 
 )

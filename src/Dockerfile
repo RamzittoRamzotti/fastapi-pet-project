@@ -5,7 +5,6 @@ WORKDIR /app/src/
 COPY backend ./backend
 COPY frontend/public/images ./frontend/public/images
 
-
 WORKDIR /app/src/backend
 
 RUN pip install --upgrade pip && pip install -r requirements.txt

@@ -1,8 +1,8 @@
 import os.path
 import sys
 from pathlib import Path
-from fastapi import FastAPI, HTTPException
-from starlette import status
+from fastapi import FastAPI
+
 from starlette.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
