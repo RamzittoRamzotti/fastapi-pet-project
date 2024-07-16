@@ -10,7 +10,7 @@ export function UpdateDeletePage() {
     const [access_token, setAccessToken] = useState(localStorage.getItem('access_token'));
     const handleDelete = async (book_id) => {
         try {
-            const response = await fetch(`http://localhost:5000/books/${book_id}`, {
+            const response = await fetch(`http://localhost/api/books/${book_id}`, {
                 method: "DELETE"
             });
             if (response.ok) {
@@ -35,7 +35,7 @@ export function UpdateDeletePage() {
         if (text) {
             console.log(text);
             try {
-                const response = await fetch(`http://localhost:5000/books/search/?text=${text}`, {
+                const response = await fetch(`http://localhost/api/books/search/?text=${text}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${access_token}`

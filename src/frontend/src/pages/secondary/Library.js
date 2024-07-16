@@ -22,7 +22,7 @@ export function Library() {
 
     const fetchBooks = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/books?skip=${skip}&limit=${limit}`, {
+            const response = await fetch(`http://localhost/api/books?skip=${skip}&limit=${limit}`, {
                 headers: {'Authorization': `Bearer ${access_token}`},
                 method: 'GET'
             });
@@ -49,7 +49,7 @@ export function Library() {
         }
 
         try {
-            const response = await fetch('http://localhost:5000/login/users/id/', {
+            const response = await fetch('http://localhost/api/login/users/id/', {
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${access_tokens}`,
@@ -67,7 +67,7 @@ export function Library() {
             const formData = new FormData();
             formData.append("user_id", user_id);
             formData.append("email", email);
-            const response_ = await fetch(`http://localhost:5000/books/reserve_book/${book_id}`, {
+            const response_ = await fetch(`http://localhost/api/books/reserve_book/${book_id}`, {
                 method: "PATCH",
                 headers: {
                     'Authorization': `Bearer ${access_tokens}`,
@@ -137,7 +137,7 @@ async function Auth(access_token, setAccessToken, navigate, setError) {
     }
 
     try {
-        const response = await fetch('http://localhost:5000/login/users/me/', {
+        const response = await fetch('http://localhost/api/login/users/me/', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${access_token}`,

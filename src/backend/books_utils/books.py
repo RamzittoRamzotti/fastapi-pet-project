@@ -14,7 +14,7 @@ from fastapi import APIRouter
 from internal.schemas import BookSchema
 from internal.tasks import send_mail
 
-books_router = APIRouter(prefix="/books", tags=["books"])
+books_router = APIRouter(prefix="/api/books", tags=["books"])
 
 
 @books_router.get('')

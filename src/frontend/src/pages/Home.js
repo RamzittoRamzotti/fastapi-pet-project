@@ -13,7 +13,7 @@ function Home() {
             return navigate('/auth');
         }
         const hello = async () =>
-            fetch('http://localhost:5000/api', {
+            fetch('http://localhost/api/api', {
                 method: 'GET'
 
             })

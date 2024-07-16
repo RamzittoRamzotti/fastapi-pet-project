@@ -10,7 +10,7 @@ export function Order() {
 
     const handleBook = async (book_id) => {
         try {
-            const response_ = await fetch('http://localhost:5000/login/users/id/', {
+            const response_ = await fetch('http://localhost/api/login/users/id/', {
                 method: "GET",
                 headers: {
                     'Authorization': `Bearer ${access_token}`,
@@ -27,7 +27,7 @@ export function Order() {
             const formData = new FormData();
             formData.append("user_id", user_id);
             formData.append("email", email);
-            const response = await fetch(`http://localhost:5000/books/reserve_book/${book_id}`, {
+            const response = await fetch(`http://localhost/api/books/reserve_book/${book_id}`, {
                 method: "PATCH",
                 headers: {
                     'Authorization': `Bearer ${access_token}`,
@@ -51,7 +51,7 @@ export function Order() {
         if (text) {
             console.log(text);
             try {
-                const response = await fetch(`http://localhost:5000/books/search/?text=${text}`, {
+                const response = await fetch(`http://localhost/api/books/search/?text=${text}`, {
                     method: "GET",
                     headers: {
                         'Authorization': `Bearer ${access_token}`

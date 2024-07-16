@@ -20,7 +20,7 @@ from internal.schemas import UserSchema
 
 http_bearer = HTTPBearer(auto_error=False)
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../../')))
-router = APIRouter(prefix='/login', tags=['JWT'], dependencies=[Depends(http_bearer)])
+router = APIRouter(prefix='/api/login', tags=['JWT'], dependencies=[Depends(http_bearer)])
 
 
 class TokenInfo(BaseModel):
